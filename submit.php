@@ -18,6 +18,9 @@ if ($conn->connect_error) {
     die("Database Connection failed: " . $conn->connect_error . "<br>Host: $host<br>Username: $username<br>Database: $database");
 }
 
+// Set MySQL timezone to Pakistan (UTC+05:00)
+$conn->query("SET time_zone = '+05:00'");
+
 // Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verify reCAPTCHA v2
@@ -70,9 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Generate unique domain ID with hashtag
     $unique_id = '#DOM-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
 
+    // Get current date in Pakistan timezone
+    $current_date = date('Y-m-d H:i:s');
+
     // Insert data into database
     $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at)
-            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', NOW())";
+            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', '$current_date')";
 
     if ($conn->query($sql) === TRUE) {
         // Redirect back to index with success message
