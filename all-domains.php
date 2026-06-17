@@ -29,7 +29,8 @@ function getDomainStatus($tenure, $createdAt, $emailSent)
     $years = 1;
 
     // Calculate expiry date (1 year from creation)
-    $createdDate = new DateTime($createdAt);
+    $createdDate = new DateTime($createdAt, new DateTimeZone('UTC'));
+    $createdDate->setTimezone(new DateTimeZone('Asia/Karachi'));
     $expiryDate = clone $createdDate;
     $expiryDate->modify("+{$years} years");
 
@@ -38,7 +39,7 @@ function getDomainStatus($tenure, $createdAt, $emailSent)
     $graceStartDate->modify("+11 months");
 
     // Check current date
-    $now = new DateTime();
+    $now = new DateTime('now', new DateTimeZone('Asia/Karachi'));
 
     // Check if expired
     if ($now >= $expiryDate) {
@@ -61,7 +62,8 @@ function getDomainStatus($tenure, $createdAt, $emailSent)
 // Function to calculate expiry date
 function getExpiryDate($createdAt)
 {
-    $createdDate = new DateTime($createdAt);
+    $createdDate = new DateTime($createdAt, new DateTimeZone('UTC'));
+    $createdDate->setTimezone(new DateTimeZone('Asia/Karachi'));
     $expiryDate = clone $createdDate;
     $expiryDate->modify("+1 year");
     return $expiryDate->format('M d, Y');
@@ -716,7 +718,11 @@ $result = $conn->query($sql);
                                 <td><span class="badge"><?php echo htmlspecialchars($row['registration_tenure']); ?></span></td>
                                 <td><?php echo getDomainStatus($row['registration_tenure'], $row['created_at'], $row['email_sent']); ?></td>
                                 <td><?php echo getExpiryDate($row['created_at']); ?></td>
-                                <td><?php echo date('M d, Y', strtotime($row['created_at'])); ?></td>
+                                <td><?php
+                                    $date = new DateTime($row['created_at'], new DateTimeZone('UTC'));
+                                    $date->setTimezone(new DateTimeZone('Asia/Karachi'));
+                                    echo $date->format('M d, Y');
+                                ?></td>
                                 <td onclick="event.stopPropagation();">
                                     <?php if (strtolower($row['domain_for']) === 'brand'): ?>
                                         <a href="emails.php?domain_id=<?php echo $row['id']; ?>" class="emails-btn" style="text-decoration: none">Emails</a>
