@@ -229,6 +229,7 @@
             <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data →</a> -->
 
             <form id="domainForm" method="POST" action="submit.php" autocomplete="off">
+                <input type="hidden" name="client_date" id="clientDate">
 
                 <!-- DOMAIN INFORMATION -->
                 <h2 class="section-title">Domain Information</h2>
@@ -363,6 +364,11 @@
 
         // Save unit head name when form is submitted
         form.addEventListener('submit', function(e) {
+            // Get current date from client's PC
+            const now = new Date();
+            const clientDate = now.toISOString().slice(0, 19).replace('T', ' ');
+            document.getElementById('clientDate').value = clientDate;
+
             const unitHeadName = unitHeadNameInput.value.trim();
             if (unitHeadName) {
                 fetch('save-unit-head-history.php', {
