@@ -64,9 +64,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $order_id = $conn->real_escape_string($_POST['order_id']);
     $additional_comments = $conn->real_escape_string($_POST['additional_comments']);
 
+    // Generate unique domain ID with hashtag
+    $unique_id = '#DOM-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
+
     // Insert data into database
-    $sql = "INSERT INTO domains (domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at) 
-            VALUES ('$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', NOW())";
+    $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at)
+            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', NOW())";
 
     if ($conn->query($sql) === TRUE) {
         // Redirect back to index with success message

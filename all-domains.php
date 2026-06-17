@@ -686,6 +686,7 @@ $result = $conn->query($sql);
                     <tr>
                         <th><input type="checkbox" id="checkAll" onclick="toggleAllCheckboxes()"></th>
                         <th>#</th>
+                        <th>Domain ID</th>
                         <th>Domain Name</th>
                         <th>Customer</th>
                         <th>Tenure</th>
@@ -708,6 +709,7 @@ $result = $conn->query($sql);
                             <tr class="<?php echo $row['is_viewed'] == 0 ? 'new' : ''; ?>" onclick="openModal(<?php echo htmlspecialchars($rowData, ENT_QUOTES); ?>)" data-domain-for="<?php echo strtolower($row['domain_for']); ?>" data-domain-id="<?php echo $row['id']; ?>">
                                 <td onclick="event.stopPropagation();"><input type="checkbox" class="row-checkbox" value="<?php echo $row['id']; ?>" onchange="updateDeleteButton()"></td>
                                 <td><?php echo $serialNumber++; ?></td>
+                                <td style="font-size: 14px; color: #3b82f6; font-weight: 600;"><?php echo htmlspecialchars($row['domain_id'] ?? ''); ?></td>
                                 <td style="font-size: 16px;"><b><?php echo htmlspecialchars($row['domain_name']); ?></b></td>
                                 <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
                                 <td><span class="badge"><?php echo htmlspecialchars($row['registration_tenure']); ?></span></td>
@@ -723,7 +725,7 @@ $result = $conn->query($sql);
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="9" class="no-data">No domain data found in the database.</td>
+                            <td colspan="10" class="no-data">No domain data found in the database.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
