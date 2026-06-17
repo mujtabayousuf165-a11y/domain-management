@@ -647,7 +647,7 @@ $result = $conn->query($sql);
                 <a href="index.php" class="back-link">← Back to Form</a>
                 <div class="headerRight">
                     <div class="header-search">
-                        <input type="text" id="searchInput" class="email-input" placeholder="🔍 Search domains..." onkeyup="filterCards()" autocomplete="off">
+                        <input type="text" id="searchInput" class="email-input" placeholder="🔍 Search domains..." onkeyup="filterCards()" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly')">
                     </div>
                     <button id="deleteSelectedBtn" class="logout-btn emailBtn" style="display: none; background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);" onclick="deleteSelected()">Delete Selected</button>
                     <a href="emails.php" class="logout-btn emailBtn">All Emails</a>
