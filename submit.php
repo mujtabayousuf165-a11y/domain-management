@@ -3,6 +3,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Set timezone to UTC+05:00 (Pakistan)
+date_default_timezone_set('Asia/Karachi');
+
 // Database configuration
 $host = 'localhost';
 $username = 'domainrequestpor_domainrequest';

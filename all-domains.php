@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Set timezone to UTC+05:00 (Pakistan)
+date_default_timezone_set('Asia/Karachi');
+
 // Check if admin is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header("Location: login.php");
