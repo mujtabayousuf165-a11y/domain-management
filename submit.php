@@ -73,8 +73,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Generate unique domain ID with hashtag
     $unique_id = '#DOM-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
 
-    // Get current date in Pakistan timezone
-    $current_date = date('Y-m-d H:i:s');
+    // Get current UTC time and add 5 hours for Pakistan timezone
+    $utc_time = new DateTime('now', new DateTimeZone('UTC'));
+    $utc_time->add(new DateInterval('PT5H')); // Add 5 hours for Pakistan timezone
+    $current_date = $utc_time->format('Y-m-d H:i:s');
 
     // Insert data into database
     $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at)
