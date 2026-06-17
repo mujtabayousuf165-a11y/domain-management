@@ -176,6 +176,7 @@
             cursor: pointer;
             transition: 0.3s ease;
             box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+            margin: 15px 0 0 ;
         }
 
         .submit-btn:hover {
