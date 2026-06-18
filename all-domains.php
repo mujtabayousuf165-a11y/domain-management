@@ -772,7 +772,8 @@ $result = $conn->query($sql);
                         </div>
                     </div>
 
-                    <div style="margin-top: 16px;">
+                    <div class="detailForm" style="margin-top: 16px; display:flex; align-items:center; justify-content:space-between; ">
+                        <div style="width: 49%">
                         <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Domain Type:</label>
                         <select class="email-input" id="domainType" style="margin-bottom: 12px;">
                             <option value="">Select Domain Type</option>
@@ -782,9 +783,10 @@ $result = $conn->query($sql);
                         </select>
                     </div>
 
-                    <div style="">
+                    <div  style="width: 49%">
                         <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Created Date:</label>
                         <input type="date" class="email-input" id="createdDateInput" style="margin-bottom: 12px;" onchange="updateExpiryDate()">
+                    </div>
                     </div>
 
                     <input type="email" class="email-input" style="margin-top: 16px; margin-bottom: 20px;" id="emailInput" placeholder="Enter email address to send data">
