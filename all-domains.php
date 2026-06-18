@@ -1005,8 +1005,11 @@ $result = $conn->query($sql);
             // CC emails
             const ccEmails = 'domain@domainrequestportal.com,ashad.khan@thetechrics.com';
 
+            // Add domain type to subject if selected
+            const emailSubject = domainType ? `${title} (${domainType})` : title;
+
             // Open email client with mailto link
-            const mailtoLink = `mailto:${email}?cc=${encodeURIComponent(ccEmails)}&subject=${encodeURIComponent(title)}&body=${encodeURIComponent(emailContent)}`;
+            const mailtoLink = `mailto:${email}?cc=${encodeURIComponent(ccEmails)}&subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailContent)}`;
             window.location.href = mailtoLink;
 
             // Clear input and show success
