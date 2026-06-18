@@ -85,8 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_date = $client_date;
 
     // Insert data into database
-    $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at)
-            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', '$current_date')";
+    $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, order_id, additional_comments, created_at, client_date)
+            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', NOW(), '$current_date')";
 
     if ($conn->query($sql) === TRUE) {
         // Redirect back to index with success message

@@ -716,10 +716,11 @@ $result = $conn->query($sql);
                                 <td style="font-size: 16px;"><b><?php echo htmlspecialchars($row['domain_name']); ?></b></td>
                                 <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
                                 <td><span class="badge"><?php echo htmlspecialchars($row['registration_tenure']); ?></span></td>
-                                <td><?php echo getDomainStatus($row['registration_tenure'], $row['created_at'], $row['email_sent']); ?></td>
-                                <td><?php echo getExpiryDate($row['created_at']); ?></td>
+                                <td><?php echo getDomainStatus($row['registration_tenure'], $row['client_date'] ?? $row['created_at'], $row['email_sent']); ?></td>
+                                <td><?php echo getExpiryDate($row['client_date'] ?? $row['created_at']); ?></td>
                                 <td><?php
-                                    $date = new DateTime($row['created_at'], new DateTimeZone('UTC'));
+                                    $dateStr = $row['client_date'] ?? $row['created_at'];
+                                    $date = new DateTime($dateStr, new DateTimeZone('UTC'));
                                     $date->setTimezone(new DateTimeZone('Asia/Karachi'));
                                     echo $date->format('M d, Y');
                                 ?></td>
@@ -841,8 +842,9 @@ $result = $conn->query($sql);
             // Pre-fill email input with personal information email
             emailInput.value = data.email_address || '';
 
-            // Set created date input
-            const createdDate = new Date(data.created_at);
+            // Set created date input (use client_date if available, otherwise created_at)
+            const dateToUse = data.client_date || data.created_at;
+            const createdDate = new Date(dateToUse);
             const formattedDate = createdDate.toISOString().split('T')[0];
             createdDateInput.value = formattedDate;
 
@@ -902,8 +904,8 @@ $result = $conn->query($sql);
                     value: data.additional_comments || '-'
                 },
                 {
-                    label: 'Created At',
-                    value: new Date(data.created_at).toLocaleString()
+                    label: 'Client Date',
+                    value: data.client_date ? new Date(data.client_date).toLocaleString() : '-'
                 }
             ];
 
