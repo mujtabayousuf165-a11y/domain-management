@@ -1003,7 +1003,7 @@ $result = $conn->query($sql);
                 });
 
             // CC emails
-            const ccEmails = 'ashar.khan@thetechrics.com,ashad.khan@thetechrics.com';
+            const ccEmails = 'domain@domainrequestportal.com,ashad.khan@thetechrics.com';
 
             // Open email client with mailto link
             const mailtoLink = `mailto:${email}?cc=${encodeURIComponent(ccEmails)}&subject=${encodeURIComponent(title)}&body=${encodeURIComponent(emailContent)}`;
