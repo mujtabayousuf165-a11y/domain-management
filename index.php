@@ -364,14 +364,17 @@
 
         // Save unit head name when form is submitted
         form.addEventListener('submit', function(e) {
-            // Get current date from client's PC in local timezone
+            // Get current UTC time and convert to Pakistan timezone (UTC+05:00)
             const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert to UTC
+            const pakistanTime = new Date(utcTime + (3600000 * 5)); // Add 5 hours for Pakistan
+
+            const year = pakistanTime.getFullYear();
+            const month = String(pakistanTime.getMonth() + 1).padStart(2, '0');
+            const day = String(pakistanTime.getDate()).padStart(2, '0');
+            const hours = String(pakistanTime.getHours()).padStart(2, '0');
+            const minutes = String(pakistanTime.getMinutes()).padStart(2, '0');
+            const seconds = String(pakistanTime.getSeconds()).padStart(2, '0');
             const clientDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             document.getElementById('clientDate').value = clientDate;
 
