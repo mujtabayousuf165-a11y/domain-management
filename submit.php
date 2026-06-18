@@ -71,8 +71,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $additional_comments = $conn->real_escape_string($_POST['additional_comments']);
     $client_date = $conn->real_escape_string($_POST['client_date']);
 
-    // Generate unique domain ID with hashtag
-    $unique_id = '#DOM-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
+    // Check if domain already exists and use existing ID, otherwise generate new ID
+    $check_domain = $conn->query("SELECT domain_id FROM domains WHERE domain_name = '$domain_name' ORDER BY id DESC LIMIT 1");
+    if ($check_domain->num_rows > 0) {
+        $row = $check_domain->fetch_assoc();
+        $unique_id = $row['domain_id'];
+    } else {
+        // Generate unique domain ID with hashtag
+        $unique_id = '#DOM-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
+    }
 
     // Use client date from PC instead of server date
     $current_date = $client_date;
