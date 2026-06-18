@@ -800,25 +800,12 @@ $result = $conn->query($sql);
     <script>
         let domainCount = <?php echo $result->num_rows; ?>; // Track current domain count
 
-        // Function to play notification sound using Web Audio API
+        // Function to play notification sound using audio element
         function playNotificationSound() {
             try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(880, audioContext.currentTime); // A5 note
-                oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.1); // Drop to A4
-
-                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
+                const notificationSound = document.getElementById('notificationSound');
+                notificationSound.currentTime = 0; // Reset to beginning
+                notificationSound.play().catch(err => console.log('Audio play failed:', err));
             } catch (err) {
                 console.log('Audio play failed:', err);
             }
