@@ -931,7 +931,7 @@ $result = $conn->query($sql);
                 },
                 {
                     label: 'Project Cost',
-                    value: data.project_cost
+                    value: '$' + (data.project_cost || '0')
                 }
             ];
 
@@ -1037,13 +1037,27 @@ $result = $conn->query($sql);
                 emailContent += `Domain Type: ${domainType}\n\n`;
             }
 
-            // Get data from both boxes
-            const allItems = [...box1.querySelectorAll('.modal-data-item'), ...box2.querySelectorAll('.modal-data-item')];
-            allItems.forEach(item => {
+            // Get data from box1 (domain information)
+            const box1Items = box1.querySelectorAll('.modal-data-item');
+            box1Items.forEach(item => {
                 const label = item.querySelector('.modal-data-label').textContent;
                 const value = item.querySelector('.modal-data-value').textContent;
                 emailContent += `${label} ${value}\n`;
             });
+
+            // Check if order_id and additional_comments are empty
+            const orderIdValue = data.order_id || '';
+            const commentsValue = data.additional_comments || '';
+
+            // Only include contact details if order_id or additional_comments are not empty
+            if (orderIdValue.trim() !== '' || commentsValue.trim() !== '') {
+                const box2Items = box2.querySelectorAll('.modal-data-item');
+                box2Items.forEach(item => {
+                    const label = item.querySelector('.modal-data-label').textContent;
+                    const value = item.querySelector('.modal-data-value').textContent;
+                    emailContent += `${label} ${value}\n`;
+                });
+            }
 
             // Mark as viewed when email is sent
             markAsViewed(actualDomainId);
@@ -1452,7 +1466,7 @@ $result = $conn->query($sql);
                 <td>${domain.buying_as}</td>
                 <td>${domain.your_name}</td>
                 <td>${domain.unit_head_name}</td>
-                <td>${domain.project_cost}</td>
+                <td>$${domain.project_cost || '0'}</td>
                 <td>${domain.email_address}</td>
                 <td>${domain.customer_name}</td>
                 <td>${domain.customer_email}</td>

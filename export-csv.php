@@ -106,7 +106,7 @@ if ($result->num_rows > 0) {
             $row['buying_as'],
             $row['your_name'],
             $row['unit_head_name'],
-            $row['project_cost'],
+            '$' . $row['project_cost'],
             $row['email_address'],
             $row['customer_name'],
             $row['customer_email'],

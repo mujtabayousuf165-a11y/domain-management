@@ -158,7 +158,7 @@ if ($result->num_rows > 0) {
                 <td>' . htmlspecialchars($row['buying_as']) . '</td>
                 <td>' . htmlspecialchars($row['your_name']) . '</td>
                 <td>' . htmlspecialchars($row['unit_head_name']) . '</td>
-                <td>' . htmlspecialchars($row['project_cost']) . '</td>
+                <td>$' . htmlspecialchars($row['project_cost']) . '</td>
                 <td>' . htmlspecialchars($row['email_address']) . '</td>
                 <td>' . htmlspecialchars($row['customer_name']) . '</td>
                 <td>' . htmlspecialchars($row['customer_email']) . '</td>
