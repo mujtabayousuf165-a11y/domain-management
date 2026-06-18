@@ -229,7 +229,7 @@
             <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data →</a> -->
 
             <form id="domainForm" method="POST" action="submit.php" autocomplete="off">
-                <input type="text" name="client_date" id="clientDate" readonly style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+                <input type="hidden" name="client_date" id="clientDate" readonly style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
 
                 <!-- DOMAIN INFORMATION -->
                 <h2 class="section-title">Domain Information</h2>

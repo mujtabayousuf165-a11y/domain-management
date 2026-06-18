@@ -27,8 +27,8 @@ $domainId = isset($_POST['domain_id']) ? intval($_POST['domain_id']) : 0;
 $createdDate = isset($_POST['created_date']) ? $_POST['created_date'] : '';
 
 if ($domainId > 0 && $createdDate) {
-    // Update created_at in database
-    $sql = "UPDATE domains SET created_at = ? WHERE id = ?";
+    // Update client_date in database (instead of created_at)
+    $sql = "UPDATE domains SET client_date = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $createdDate, $domainId);
     
