@@ -966,17 +966,26 @@ $result = $conn->query($sql);
             });
             box1.innerHTML = box1HTML;
 
-            // Populate box 2
-            let box2HTML = '<h3>Contact & Details</h3>';
-            box2Fields.forEach(field => {
-                box2HTML += `
-                    <div class="modal-data-item">
-                        <div class="modal-data-label">${field.label}:</div>
-                        <div class="modal-data-value">${field.value}</div>
-                    </div>
-                `;
-            });
-            box2.innerHTML = box2HTML;
+            // Populate box 2 only if order_id or additional_comments are not empty
+            const orderIdValue = data.order_id ? data.order_id.toString() : '';
+            const commentsValue = data.additional_comments ? data.additional_comments.toString() : '';
+
+            if (orderIdValue.trim() !== '' || commentsValue.trim() !== '') {
+                let box2HTML = '<h3>Contact & Details</h3>';
+                box2Fields.forEach(field => {
+                    box2HTML += `
+                        <div class="modal-data-item">
+                            <div class="modal-data-label">${field.label}:</div>
+                            <div class="modal-data-value">${field.value}</div>
+                        </div>
+                    `;
+                });
+                box2.innerHTML = box2HTML;
+                box2.style.display = 'block';
+            } else {
+                box2.innerHTML = '';
+                box2.style.display = 'none';
+            }
 
             modal.classList.add('active');
 
@@ -1039,8 +1048,8 @@ $result = $conn->query($sql);
             });
 
             // Check if order_id and additional_comments are empty
-            const orderIdValue = data.order_id || '';
-            const commentsValue = data.additional_comments || '';
+            const orderIdValue = data.order_id ? data.order_id.toString() : '';
+            const commentsValue = data.additional_comments ? data.additional_comments.toString() : '';
 
             // Only include contact details if order_id or additional_comments are not empty
             if (orderIdValue.trim() !== '' || commentsValue.trim() !== '') {
