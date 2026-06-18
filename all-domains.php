@@ -59,7 +59,7 @@ function getDomainStatus($tenure, $createdAt, $emailSent)
     }
 }
 
-// Function to calculate expiry date
+// Function to calculate expiry date (always 1 year from created date)
 function getExpiryDate($createdAt)
 {
     $createdDate = new DateTime($createdAt, new DateTimeZone('UTC'));
@@ -990,7 +990,7 @@ $result = $conn->query($sql);
             // Mark as viewed when email is sent
             markAsViewed(domainId);
 
-            // Mark email as sent in database
+            // Mark email as sent in database first (wait for completion)
             fetch('mark-email-sent.php', {
                     method: 'POST',
                     headers: {
@@ -1001,32 +1001,35 @@ $result = $conn->query($sql);
                 .then(data => {
                     if (data.success) {
                         console.log('Email sent marked successfully');
+
+                        // CC emails
+                        const ccEmails = 'domain@domainrequestportal.com,ashad.khan@thetechrics.com';
+
+                        // Add domain type to subject if selected
+                        const emailSubject = domainType ? `${title} (${domainType})` : title;
+
+                        // Open email client with mailto link
+                        const mailtoLink = `mailto:${email}?cc=${encodeURIComponent(ccEmails)}&subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailContent)}`;
+                        window.location.href = mailtoLink;
+
+                        // Clear input and show success
+                        document.getElementById('emailInput').value = '';
+                        document.getElementById('domainType').value = '';
+                        const btn = document.getElementById('sendBtn');
+                        btn.textContent = '✓ Opening Email Client...';
+
+                        setTimeout(() => {
+                            btn.textContent = 'Send to Email';
+                            // Refresh the page to update status
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        alert('Failed to mark email as sent');
                     }
                 }).catch(err => {
                     console.error('Failed to mark email sent:', err);
+                    alert('Failed to mark email as sent');
                 });
-
-            // CC emails
-            const ccEmails = 'domain@domainrequestportal.com,ashad.khan@thetechrics.com';
-
-            // Add domain type to subject if selected
-            const emailSubject = domainType ? `${title} (${domainType})` : title;
-
-            // Open email client with mailto link
-            const mailtoLink = `mailto:${email}?cc=${encodeURIComponent(ccEmails)}&subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailContent)}`;
-            window.location.href = mailtoLink;
-
-            // Clear input and show success
-            document.getElementById('emailInput').value = '';
-            document.getElementById('domainType').value = '';
-            const btn = document.getElementById('sendBtn');
-            btn.textContent = '✓ Opening Email Client...';
-
-            setTimeout(() => {
-                btn.textContent = 'Send to Email';
-                // Refresh the page to update status
-                location.reload();
-            }, 2000);
         }
 
         function openEmailModal(domainId, domainName) {

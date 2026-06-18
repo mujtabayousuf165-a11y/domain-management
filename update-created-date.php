@@ -28,9 +28,11 @@ $createdDate = isset($_POST['created_date']) ? $_POST['created_date'] : '';
 
 if ($domainId > 0 && $createdDate) {
     // Update client_date in database (instead of created_at)
+    // Convert date format from YYYY-MM-DD to YYYY-MM-DD HH:MM:SS
+    $createdDateTime = $createdDate . ' 00:00:00';
     $sql = "UPDATE domains SET client_date = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $createdDate, $domainId);
+    $stmt->bind_param("si", $createdDateTime, $domainId);
     
     if ($stmt->execute()) {
         header('Content-Type: application/json');
