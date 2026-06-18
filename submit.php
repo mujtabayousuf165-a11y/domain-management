@@ -62,15 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $domain_for = $conn->real_escape_string($_POST['domain_for']);
     $buying_as = $conn->real_escape_string($_POST['buying_as']);
     $your_name = $conn->real_escape_string($_POST['your_name']);
-
-    // Handle unit head name (either from select or new input)
-    $unit_head_name = '';
-    if (isset($_POST['unit_head_name']) && $_POST['unit_head_name'] !== 'new') {
-        $unit_head_name = $conn->real_escape_string($_POST['unit_head_name']);
-    } elseif (isset($_POST['new_unit_head_name'])) {
-        $unit_head_name = $conn->real_escape_string($_POST['new_unit_head_name']);
-    }
-
+    $unit_head_name = $conn->real_escape_string($_POST['unit_head_name']);
     $project_cost = $conn->real_escape_string($_POST['project_cost']);
     $email_address = $conn->real_escape_string($_POST['email_address']);
     $customer_name = $conn->real_escape_string($_POST['customer_name']);

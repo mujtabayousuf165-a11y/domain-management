@@ -276,12 +276,15 @@
 
                     <div class="form-group">
                         <label>Unit Head Name *</label>
-                        <select class="form-control" id="unitHeadName" name="unit_head_name" required onchange="handleUnitHeadChange(this)">
+                        <select class="form-control" id="unitHeadName" name="unit_head_name" required>
                             <option value="">Select Unit Head</option>
-                            <option value="new">+ Add New Unit Head</option>
-                            <!-- Will be populated by JavaScript -->
+                            <option value="Aamir Bin Qasim">Aamir Bin Qasim</option>
+                            <option value="Emmad">Emmad</option>
+                            <option value="Saif Bin Qasim">Saif Bin Qasim</option>
+                            <option value="Syed Ashhad Ali">Syed Ashhad Ali</option>
+                            <option value="Yousuf">Yousuf</option>
+                            <option value="Zain Rehan Siddiqui">Zain Rehan Siddiqui</option>
                         </select>
-                        <input type="text" class="form-control" id="newUnitHeadName" name="new_unit_head_name" placeholder="Enter New Unit Head Name" style="display: none; margin-top: 10px;">
                     </div>
 
                     <div class="form-group">
@@ -344,44 +347,6 @@
         const form = document.getElementById('domainForm');
         const successMessage = document.getElementById('successMessage');
         const captcha = document.getElementById('captcha');
-        const unitHeadNameInput = document.getElementById('unitHeadName');
-
-        // Load unit head history on page load
-        function loadUnitHeadHistory() {
-            fetch('get-unit-head-history.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success && data.unit_heads) {
-                        const unitHeadSelect = document.getElementById('unitHeadName');
-                        // Keep the first two options (Select Unit Head and Add New)
-                        while (unitHeadSelect.options.length > 2) {
-                            unitHeadSelect.remove(2);
-                        }
-                        // Add unit heads as options
-                        data.unit_heads.forEach(name => {
-                            const option = document.createElement('option');
-                            option.value = name;
-                            option.textContent = name;
-                            unitHeadSelect.appendChild(option);
-                        });
-                    }
-                })
-                .catch(err => console.error('Failed to load unit head history:', err));
-        }
-
-        // Handle unit head select change
-        function handleUnitHeadChange(select) {
-            const newUnitHeadInput = document.getElementById('newUnitHeadName');
-            if (select.value === 'new') {
-                newUnitHeadInput.style.display = 'block';
-                newUnitHeadInput.required = true;
-                select.required = false;
-            } else {
-                newUnitHeadInput.style.display = 'none';
-                newUnitHeadInput.required = false;
-                select.required = true;
-            }
-        }
 
         // Function to update client date input
         function updateClientDate() {
@@ -405,31 +370,7 @@
         form.addEventListener('submit', function(e) {
             // Update client date just before submission
             updateClientDate();
-
-            // Handle unit head name (either from select or new input)
-            const unitHeadSelect = document.getElementById('unitHeadName');
-            const newUnitHeadInput = document.getElementById('newUnitHeadName');
-            let unitHeadName = '';
-
-            if (unitHeadSelect.value === 'new') {
-                unitHeadName = newUnitHeadInput.value.trim();
-            } else {
-                unitHeadName = unitHeadSelect.value.trim();
-            }
-
-            if (unitHeadName) {
-                fetch('save-unit-head-history.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `unit_head_name=${encodeURIComponent(unitHeadName)}`
-                }).catch(err => console.error('Failed to save unit head name:', err));
-            }
         });
-
-        // Load unit head history on page load
-        loadUnitHeadHistory();
 
         // Check for success parameter in URL
         const urlParams = new URLSearchParams(window.location.search);
