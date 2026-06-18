@@ -22,26 +22,19 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Get last known domain ID from POST
-$lastId = isset($_POST['last_id']) ? intval($_POST['last_id']) : 0;
+// Get current domain count from GET parameter
+$currentCount = isset($_GET['count']) ? intval($_GET['count']) : 0;
 
-// Fetch domains with ID greater than lastId
-$sql = "SELECT * FROM domains WHERE id > ? ORDER BY id DESC";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $lastId);
-$stmt->execute();
-$result = $stmt->get_result();
+// Get total domain count
+$totalCountResult = $conn->query("SELECT COUNT(*) as total FROM domains");
+$totalCountRow = $totalCountResult->fetch_assoc();
+$totalCount = $totalCountRow['total'];
 
-$newDomains = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $newDomains[] = $row;
-    }
-}
+// Calculate new domains
+$newDomains = $totalCount - $currentCount;
 
 header('Content-Type: application/json');
-echo json_encode(['success' => true, 'new_domains' => $newDomains]);
+echo json_encode(['success' => true, 'new_domains' => $newDomains, 'total_count' => $totalCount]);
 
-$stmt->close();
 $conn->close();
 ?>

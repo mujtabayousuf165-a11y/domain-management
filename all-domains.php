@@ -798,6 +798,51 @@ $result = $conn->query($sql);
     </div>
 
     <script>
+        let domainCount = <?php echo $result->num_rows; ?>; // Track current domain count
+
+        // Function to play notification sound using Web Audio API
+        function playNotificationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, audioContext.currentTime); // A5 note
+                oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.1); // Drop to A4
+
+                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (err) {
+                console.log('Audio play failed:', err);
+            }
+        }
+
+        // Poll for new domains every 5 seconds
+        setInterval(function() {
+            fetch('check-new-domains.php?count=' + domainCount)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.new_domains > 0) {
+                        // Play notification sound
+                        playNotificationSound();
+
+                        // Update domain count
+                        domainCount = data.total_count;
+
+                        // Reload the page to show new data
+                        location.reload();
+                    }
+                })
+                .catch(err => console.error('Failed to check for new domains:', err));
+        }, 5000); // Check every 5 seconds
+
         function updateExpiryDate(domainId = null) {
             const createdDateInput = document.getElementById('createdDateInput');
 
