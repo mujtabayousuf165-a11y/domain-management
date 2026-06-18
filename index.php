@@ -364,17 +364,14 @@
 
         // Save unit head name when form is submitted
         form.addEventListener('submit', function(e) {
-            // Get current date and time from browser (local time)
+            // Get current date and time from PC (system time)
             const now = new Date();
-            const clientDate = now.toLocaleString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            }).replace(/(\d+)\/(\d+)\/(\d+), (\d+:\d+:\d+)/, '$3-$1-$2 $4');
+            const clientDate = now.getFullYear() + '-' +
+                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                String(now.getDate()).padStart(2, '0') + ' ' +
+                String(now.getHours()).padStart(2, '0') + ':' +
+                String(now.getMinutes()).padStart(2, '0') + ':' +
+                String(now.getSeconds()).padStart(2, '0');
 
             document.getElementById('clientDate').value = clientDate;
 
