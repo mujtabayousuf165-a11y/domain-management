@@ -806,6 +806,12 @@ $result = $conn->query($sql);
                 const notificationSound = document.getElementById('notificationSound');
                 notificationSound.currentTime = 0; // Reset to beginning
                 notificationSound.play().catch(err => console.log('Audio play failed:', err));
+
+                // Stop after 2.5 seconds
+                setTimeout(() => {
+                    notificationSound.pause();
+                    notificationSound.currentTime = 0;
+                }, 2500);
             } catch (err) {
                 console.log('Audio play failed:', err);
             }
