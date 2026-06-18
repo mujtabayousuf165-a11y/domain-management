@@ -839,6 +839,9 @@ $result = $conn->query($sql);
             const emailInput = document.getElementById('emailInput');
             const createdDateInput = document.getElementById('createdDateInput');
 
+            // Store the database ID in modal data attribute
+            modal.setAttribute('data-domain-id', data.id);
+
             title.textContent = data.domain_name;
 
             // Pre-fill email input with personal information email
@@ -963,8 +966,16 @@ $result = $conn->query($sql);
             const title = document.getElementById('modalTitle').textContent;
             const domainType = document.getElementById('domainType').value;
 
-            // Get domain ID from box 1
+            // Get database ID from box 1 (not domain_id)
             const domainId = box1.querySelector('.modal-data-item:nth-child(2) .modal-data-value').textContent;
+
+            // If domainId contains #DOM- prefix, extract the actual database ID from the row data
+            let actualDomainId = domainId;
+            if (domainId && domainId.startsWith('#DOM-')) {
+                // Get the database ID from the modal data (stored in data-id attribute of the modal)
+                const modal = document.getElementById('detailModal');
+                actualDomainId = modal.getAttribute('data-domain-id');
+            }
 
             if (!email || !email.includes('@')) {
                 alert('Please enter a valid email address');
@@ -988,7 +999,7 @@ $result = $conn->query($sql);
             });
 
             // Mark as viewed when email is sent
-            markAsViewed(domainId);
+            markAsViewed(actualDomainId);
 
             // Mark email as sent in database first (wait for completion)
             fetch('mark-email-sent.php', {
@@ -996,7 +1007,7 @@ $result = $conn->query($sql);
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `domain_id=${domainId}`
+                    body: `domain_id=${actualDomainId}`
                 }).then(response => response.json())
                 .then(data => {
                     if (data.success) {
