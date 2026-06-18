@@ -229,7 +229,7 @@
             <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data →</a> -->
 
             <form id="domainForm" method="POST" action="submit.php" autocomplete="off">
-                <input type="hidden" name="client_date" id="clientDate">
+                <input type="text" name="client_date" id="clientDate" readonly style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
 
                 <!-- DOMAIN INFORMATION -->
                 <h2 class="section-title">Domain Information</h2>
@@ -362,9 +362,8 @@
                 .catch(err => console.error('Failed to load unit head history:', err));
         }
 
-        // Save unit head name when form is submitted
-        form.addEventListener('submit', function(e) {
-            // Get current date and time from PC (system time)
+        // Function to update client date input
+        function updateClientDate() {
             const now = new Date();
             const clientDate = now.getFullYear() + '-' +
                 String(now.getMonth() + 1).padStart(2, '0') + '-' +
@@ -372,8 +371,19 @@
                 String(now.getHours()).padStart(2, '0') + ':' +
                 String(now.getMinutes()).padStart(2, '0') + ':' +
                 String(now.getSeconds()).padStart(2, '0');
-
             document.getElementById('clientDate').value = clientDate;
+        }
+
+        // Update client date on page load
+        updateClientDate();
+
+        // Update client date every second
+        setInterval(updateClientDate, 1000);
+
+        // Save unit head name when form is submitted
+        form.addEventListener('submit', function(e) {
+            // Update client date just before submission
+            updateClientDate();
 
             const unitHeadName = unitHeadNameInput.value.trim();
             if (unitHeadName) {
