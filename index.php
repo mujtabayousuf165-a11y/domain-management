@@ -276,10 +276,12 @@
 
                     <div class="form-group">
                         <label>Unit Head Name *</label>
-                        <input type="text" class="form-control" id="unitHeadName" name="unit_head_name" placeholder="Enter Unit Head Name" list="unitHeadHistory" required>
-                        <datalist id="unitHeadHistory">
+                        <select class="form-control" id="unitHeadName" name="unit_head_name" required onchange="handleUnitHeadChange(this)">
+                            <option value="">Select Unit Head</option>
+                            <option value="new">+ Add New Unit Head</option>
                             <!-- Will be populated by JavaScript -->
-                        </datalist>
+                        </select>
+                        <input type="text" class="form-control" id="newUnitHeadName" name="new_unit_head_name" placeholder="Enter New Unit Head Name" style="display: none; margin-top: 10px;">
                     </div>
 
                     <div class="form-group">
@@ -343,7 +345,6 @@
         const successMessage = document.getElementById('successMessage');
         const captcha = document.getElementById('captcha');
         const unitHeadNameInput = document.getElementById('unitHeadName');
-        const unitHeadHistory = document.getElementById('unitHeadHistory');
 
         // Load unit head history on page load
         function loadUnitHeadHistory() {
@@ -351,15 +352,35 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.unit_heads) {
-                        unitHeadHistory.innerHTML = '';
+                        const unitHeadSelect = document.getElementById('unitHeadName');
+                        // Keep the first two options (Select Unit Head and Add New)
+                        while (unitHeadSelect.options.length > 2) {
+                            unitHeadSelect.remove(2);
+                        }
+                        // Add unit heads as options
                         data.unit_heads.forEach(name => {
                             const option = document.createElement('option');
                             option.value = name;
-                            unitHeadHistory.appendChild(option);
+                            option.textContent = name;
+                            unitHeadSelect.appendChild(option);
                         });
                     }
                 })
                 .catch(err => console.error('Failed to load unit head history:', err));
+        }
+
+        // Handle unit head select change
+        function handleUnitHeadChange(select) {
+            const newUnitHeadInput = document.getElementById('newUnitHeadName');
+            if (select.value === 'new') {
+                newUnitHeadInput.style.display = 'block';
+                newUnitHeadInput.required = true;
+                select.required = false;
+            } else {
+                newUnitHeadInput.style.display = 'none';
+                newUnitHeadInput.required = false;
+                select.required = true;
+            }
         }
 
         // Function to update client date input
@@ -385,7 +406,17 @@
             // Update client date just before submission
             updateClientDate();
 
-            const unitHeadName = unitHeadNameInput.value.trim();
+            // Handle unit head name (either from select or new input)
+            const unitHeadSelect = document.getElementById('unitHeadName');
+            const newUnitHeadInput = document.getElementById('newUnitHeadName');
+            let unitHeadName = '';
+
+            if (unitHeadSelect.value === 'new') {
+                unitHeadName = newUnitHeadInput.value.trim();
+            } else {
+                unitHeadName = unitHeadSelect.value.trim();
+            }
+
             if (unitHeadName) {
                 fetch('save-unit-head-history.php', {
                     method: 'POST',
