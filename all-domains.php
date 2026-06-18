@@ -802,13 +802,11 @@ $result = $conn->query($sql);
             const createdDateInput = document.getElementById('createdDateInput');
 
             if (createdDateInput.value) {
-                // Get domain ID from parameter or from box 1
+                // Get domain ID from parameter or from modal data attribute
                 let id = domainId;
                 if (!id) {
-                    const box1 = document.getElementById('modalBox1');
-                    if (box1) {
-                        id = box1.querySelector('.modal-data-item:nth-child(2) .modal-data-value')?.textContent;
-                    }
+                    const modal = document.getElementById('detailModal');
+                    id = modal.getAttribute('data-domain-id');
                 }
 
                 // Update created date in database
@@ -823,9 +821,13 @@ $result = $conn->query($sql);
                         .then(data => {
                             if (data.success) {
                                 console.log('Created date updated successfully');
+                                alert('Date updated successfully');
+                            } else {
+                                alert('Failed to update date: ' + (data.message || 'Unknown error'));
                             }
                         }).catch(err => {
                             console.error('Failed to update created date:', err);
+                            alert('Failed to update date');
                         });
                 }
             }
