@@ -966,26 +966,28 @@ $result = $conn->query($sql);
             });
             box1.innerHTML = box1HTML;
 
-            // Populate box 2 only if order_id or additional_comments are not empty
+            // Populate box 2 - show all contact details but only include order ID and comments if not empty
+            let box2HTML = '<h3>Contact & Details</h3>';
             const orderIdValue = data.order_id ? data.order_id.toString() : '';
             const commentsValue = data.additional_comments ? data.additional_comments.toString() : '';
 
-            if (orderIdValue.trim() !== '' || commentsValue.trim() !== '') {
-                let box2HTML = '<h3>Contact & Details</h3>';
-                box2Fields.forEach(field => {
-                    box2HTML += `
-                        <div class="modal-data-item">
-                            <div class="modal-data-label">${field.label}:</div>
-                            <div class="modal-data-value">${field.value}</div>
-                        </div>
-                    `;
-                });
-                box2.innerHTML = box2HTML;
-                box2.style.display = 'block';
-            } else {
-                box2.innerHTML = '';
-                box2.style.display = 'none';
-            }
+            box2Fields.forEach(field => {
+                // Skip order ID and additional comments if they are empty
+                if (field.label === 'Order ID' && orderIdValue.trim() === '') {
+                    return;
+                }
+                if (field.label === 'Additional Comments' && commentsValue.trim() === '') {
+                    return;
+                }
+                box2HTML += `
+                    <div class="modal-data-item">
+                        <div class="modal-data-label">${field.label}:</div>
+                        <div class="modal-data-value">${field.value}</div>
+                    </div>
+                `;
+            });
+            box2.innerHTML = box2HTML;
+            box2.style.display = 'block';
 
             modal.classList.add('active');
 
@@ -1047,18 +1049,29 @@ $result = $conn->query($sql);
                 emailContent += `${label} ${value}\n`;
             });
 
-            // Check if order_id and additional_comments are empty
-            const orderIdValue = data.order_id ? data.order_id.toString() : '';
-            const commentsValue = data.additional_comments ? data.additional_comments.toString() : '';
-
-            // Only include contact details if order_id or additional_comments are not empty
-            if (orderIdValue.trim() !== '' || commentsValue.trim() !== '') {
-                const box2Items = box2.querySelectorAll('.modal-data-item');
-                box2Items.forEach(item => {
-                    const label = item.querySelector('.modal-data-label').textContent;
-                    const value = item.querySelector('.modal-data-value').textContent;
+            // Get order_id and additional_comments from box2
+            let orderIdValue = '';
+            let commentsValue = '';
+            const box2Items = box2.querySelectorAll('.modal-data-item');
+            box2Items.forEach(item => {
+                const label = item.querySelector('.modal-data-label').textContent;
+                const value = item.querySelector('.modal-data-value').textContent;
+                if (label === 'Order ID:') {
+                    orderIdValue = value === '-' ? '' : value;
+                } else if (label === 'Additional Comments:') {
+                    commentsValue = value === '-' ? '' : value;
+                } else {
+                    // Include other contact details (customer name, email, client date)
                     emailContent += `${label} ${value}\n`;
-                });
+                }
+            });
+
+            // Only include order ID and additional comments if they are not empty
+            if (orderIdValue.trim() !== '') {
+                emailContent += `Order ID: ${orderIdValue}\n`;
+            }
+            if (commentsValue.trim() !== '') {
+                emailContent += `Additional Comments: ${commentsValue}\n`;
             }
 
             // Mark as viewed when email is sent
