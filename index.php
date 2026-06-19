@@ -91,6 +91,19 @@ $conn->close();
             opacity: 0.1;
             z-index: -1;
         }
+        .tikimg {
+    width: 142px;
+    height: 112px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.tikimg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    scale: 2.4;
+}
 
         .title {
             font-size: 42px;
@@ -249,13 +262,13 @@ $conn->close();
         }
 
         .receipt-content {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-        }
+    background: white;
+    border-radius: 15px;
+    padding: 30px 30px;
+    max-width: 550px;
+    width: 100%;
+    position: relative;
+}
 
         .receipt-header {
             text-align: center;
@@ -393,13 +406,13 @@ $conn->close();
     <div class="container">
         <div class="form-box">
             <div class="success-message" id="successMessage">
-                ✅ Your domain registration request has been submitted successfully!
+                âœ… Your domain registration request has been submitted successfully!
             </div>
             <h1 class="title">Domain Registration System</h1>
             <p class="subtitle">
                 Fill out the details below to request a domain registration quickly and securely.
             </p>
-            <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data →</a> -->
+            <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data â†’</a> -->
 
             <form id="domainForm" method="POST" action="submit.php" autocomplete="off">
                 <input type="hidden" name="client_date" id="clientDate" readonly style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
@@ -610,7 +623,6 @@ $conn->close();
     <?php if ($receipt_data): ?>
     <div class="receipt-popup" id="receiptPopup">
         <div class="receipt-content" id="receiptContent">
-            <button class="close-btn" onclick="closeReceiptPopup()">×</button>
             <div class="receipt-header">
                 <div class="tikimg"><img src="tik.gif" alt=""></div>
                 <h2>Domain Registration Receipt</h2>
@@ -666,8 +678,8 @@ $conn->close();
             </div>
 
             <div class="receipt-actions">
-                <button class="receipt-btn" onclick="takeReceiptScreenshot()">📸 Take Screenshot</button>
-                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">✓ Done</button>
+                <button class="receipt-btn" onclick="takeReceiptScreenshot()">ðŸ“¸ Take Screenshot</button>
+                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">Ã— Close</button>
             </div>
         </div>
     </div>
