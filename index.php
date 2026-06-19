@@ -550,17 +550,21 @@ $conn->close();
             }, 5000);
         }
 
-        // Show receipt popup if receipt data is available
-        <?php if ($receipt_data): ?>
-            showReceiptPopup();
-        <?php endif; ?>
-
         function showReceiptPopup() {
             const popup = document.getElementById('receiptPopup');
             if (popup) {
                 popup.classList.add('active');
             }
         }
+
+        // Show receipt popup if receipt data is available after page loads
+        window.onload = function() {
+            <?php if ($receipt_data): ?>
+                setTimeout(() => {
+                    showReceiptPopup();
+                }, 500); // Small delay to ensure DOM is ready
+            <?php endif; ?>
+        };
 
         function closeReceiptPopup() {
             const popup = document.getElementById('receiptPopup');
