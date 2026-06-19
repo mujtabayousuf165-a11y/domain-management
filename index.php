@@ -361,7 +361,7 @@ $conn->close();
         }
 
         .receipt-btn-secondary {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #d90e0e, #7f0404);
         }
 
         .close-btn {
@@ -679,7 +679,7 @@ $conn->close();
 
             <div class="receipt-actions">
                 <button class="receipt-btn" onclick="takeReceiptScreenshot()">📸 Take Screenshot</button>
-                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">× Close</button>
+                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">Close</button>
             </div>
         </div>
     </div>
