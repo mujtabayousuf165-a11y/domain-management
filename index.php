@@ -679,7 +679,7 @@ $conn->close();
 
             <div class="receipt-actions">
                 <button class="receipt-btn" onclick="takeReceiptScreenshot()">📸 Take Screenshot</button>
-                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">Close</button>
+                <a href="https://domainrequestportal.com/" class="receipt-btn receipt-btn-secondary">Close</a>
             </div>
         </div>
     </div>
