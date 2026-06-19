@@ -264,7 +264,7 @@ $conn->close();
         .receipt-content {
     background: white;
     border-radius: 15px;
-    padding: 30px 30px;
+    padding: 10px 30px 30px;
     max-width: 550px;
     width: 100%;
     position: relative;
@@ -406,13 +406,13 @@ $conn->close();
     <div class="container">
         <div class="form-box">
             <div class="success-message" id="successMessage">
-                âœ… Your domain registration request has been submitted successfully!
+                ✅ Your domain registration request has been submitted successfully!
             </div>
             <h1 class="title">Domain Registration System</h1>
             <p class="subtitle">
                 Fill out the details below to request a domain registration quickly and securely.
             </p>
-            <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data â†’</a> -->
+            <!-- <a href="all-domains.php" style="display: inline-block; margin-bottom: 30px; color: #3b82f6; text-decoration: none; font-weight: 500; transition: 0.3s ease;">View All Domain Data →</a> -->
 
             <form id="domainForm" method="POST" action="submit.php" autocomplete="off">
                 <input type="hidden" name="client_date" id="clientDate" readonly style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
@@ -625,7 +625,7 @@ $conn->close();
         <div class="receipt-content" id="receiptContent">
             <div class="receipt-header">
                 <div class="tikimg"><img src="tik.gif" alt=""></div>
-                <h2>Domain Registration Receipt</h2>
+                <h2>Domain Registration Receipt</h2>    
                 <p class="success">Registration Successful!</p>
                 <p style="color: #666; margin-top: 10px;">Date: <?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></p>
             </div>
@@ -678,8 +678,8 @@ $conn->close();
             </div>
 
             <div class="receipt-actions">
-                <button class="receipt-btn" onclick="takeReceiptScreenshot()">ðŸ“¸ Take Screenshot</button>
-                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">Ã— Close</button>
+                <button class="receipt-btn" onclick="takeReceiptScreenshot()">📸 Take Screenshot</button>
+                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">× Close</button>
             </div>
         </div>
     </div>
