@@ -1261,7 +1261,7 @@ $result = $conn->query($sql);
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `domain_id=${domainIds.join('&domain_id=')}`
+                    body: `domain_id[]=${domainIds.join('&domain_id[]=')}`
                 }).then(response => response.json())
                 .then(data => {
                     if (data.success) {
