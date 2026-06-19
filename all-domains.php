@@ -890,7 +890,11 @@ $result = $conn->query($sql);
             // Set created date input (use client_date if available, otherwise created_at)
             const dateToUse = data.client_date || data.created_at;
             const createdDate = new Date(dateToUse);
-            const formattedDate = createdDate.toISOString().split('T')[0];
+            // Use local date methods to avoid timezone conversion issues
+            const year = createdDate.getFullYear();
+            const month = String(createdDate.getMonth() + 1).padStart(2, '0');
+            const day = String(createdDate.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
             createdDateInput.value = formattedDate;
 
             // Split fields into two groups
