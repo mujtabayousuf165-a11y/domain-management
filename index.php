@@ -362,6 +362,7 @@ $conn->close();
 
         .receipt-btn-secondary {
             background: linear-gradient(135deg, #d90e0e, #7f0404);
+            text-decoration: none;
         }
 
         .close-btn {
