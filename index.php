@@ -612,7 +612,7 @@ $conn->close();
         <div class="receipt-content" id="receiptContent">
             <button class="close-btn" onclick="closeReceiptPopup()">×</button>
             <div class="receipt-header">
-                <img src="tik.gif" alt="">
+                <div class="tikimg"><img src="tik.gif" alt=""></div>
                 <h2>Domain Registration Receipt</h2>
                 <p class="success">Registration Successful!</p>
                 <p style="color: #666; margin-top: 10px;">Date: <?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></p>
