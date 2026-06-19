@@ -507,10 +507,7 @@ $conn->close();
                     </div>
 
                 </div>
-
-                </div>
-
-                <!-- reCAPTCHA v2 -->
+                    <!-- reCAPTCHA v2 -->
                 <div class="form-group full-width">
                     <div class="g-recaptcha" data-sitekey="6LdKNCEtAAAAADZZB91oynq1DOjAYZZsWnKYLhXz"></div>
                 </div>
@@ -519,7 +516,7 @@ $conn->close();
                     Submit Request
                 </button>
 
-
+                
 
             </form>
 
