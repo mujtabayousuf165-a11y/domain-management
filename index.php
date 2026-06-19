@@ -251,49 +251,47 @@ $conn->close();
         .receipt-content {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            max-width: 600px;
+            padding: 20px;
+            max-width: 500px;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
             position: relative;
         }
 
         .receipt-header {
             text-align: center;
             border-bottom: 2px dashed #ddd;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
         }
 
         .receipt-header h2 {
             color: #3b82f6;
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 5px;
         }
 
         .receipt-header .success {
             color: #10b981;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
         }
 
         .receipt-section {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .receipt-section h3 {
             color: #3b82f6;
-            font-size: 14px;
-            margin-bottom: 10px;
+            font-size: 11px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .receipt-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 4px 0;
             border-bottom: 1px solid #f0f0f0;
         }
 
@@ -304,35 +302,41 @@ $conn->close();
         .receipt-label {
             color: #666;
             font-weight: 500;
+            font-size: 12px;
         }
 
         .receipt-value {
             color: #333;
             font-weight: 600;
             text-align: right;
+            font-size: 12px;
         }
 
         .receipt-footer {
             text-align: center;
             border-top: 2px dashed #ddd;
-            padding-top: 20px;
-            margin-top: 20px;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .receipt-footer p {
+            font-size: 11px;
         }
 
         .receipt-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 12px;
         }
 
         .receipt-btn {
             background: linear-gradient(135deg, #3b82f6, #60a5fa);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 14px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -349,16 +353,16 @@ $conn->close();
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: #ef4444;
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
