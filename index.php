@@ -675,12 +675,6 @@ $conn->close();
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_email']); ?></span>
                     </div>
                     <?php endif; ?>
-                    <?php if (!empty($receipt_data['client_number'])): ?>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Client Number:</span>
-                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['client_number']); ?></span>
-                    </div>
-                    <?php endif; ?>
                 </div>
             </div>
 
