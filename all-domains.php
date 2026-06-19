@@ -941,12 +941,8 @@ $result = $conn->query($sql);
                     value: data.customer_email
                 },
                 {
-                    label: 'Order ID',
-                    value: data.order_id || '-'
-                },
-                {
-                    label: 'Additional Comments',
-                    value: data.additional_comments || '-'
+                    label: 'Client Number',
+                    value: data.client_number || '-'
                 },
                 {
                     label: 'Client Date',
@@ -966,17 +962,13 @@ $result = $conn->query($sql);
             });
             box1.innerHTML = box1HTML;
 
-            // Populate box 2 - show all contact details but only include order ID and comments if not empty
+            // Populate box 2 - show all contact details but only include client number if not empty
             let box2HTML = '<h3>Contact & Details</h3>';
-            const orderIdValue = data.order_id ? data.order_id.toString() : '';
-            const commentsValue = data.additional_comments ? data.additional_comments.toString() : '';
+            const clientNumberValue = data.client_number ? data.client_number.toString() : '';
 
             box2Fields.forEach(field => {
-                // Skip order ID and additional comments if they are empty
-                if (field.label === 'Order ID' && orderIdValue.trim() === '') {
-                    return;
-                }
-                if (field.label === 'Additional Comments' && commentsValue.trim() === '') {
+                // Skip client number if it is empty
+                if (field.label === 'Client Number' && clientNumberValue.trim() === '') {
                     return;
                 }
                 box2HTML += `
@@ -1049,29 +1041,23 @@ $result = $conn->query($sql);
                 emailContent += `${label} ${value}\n`;
             });
 
-            // Get order_id and additional_comments from box2
-            let orderIdValue = '';
-            let commentsValue = '';
+            // Get client_number from box2
+            let clientNumberValue = '';
             const box2Items = box2.querySelectorAll('.modal-data-item');
             box2Items.forEach(item => {
                 const label = item.querySelector('.modal-data-label').textContent;
                 const value = item.querySelector('.modal-data-value').textContent;
-                if (label === 'Order ID:') {
-                    orderIdValue = value === '-' ? '' : value;
-                } else if (label === 'Additional Comments:') {
-                    commentsValue = value === '-' ? '' : value;
+                if (label === 'Client Number:') {
+                    clientNumberValue = value === '-' ? '' : value;
                 } else {
                     // Include other contact details (customer name, email, client date)
                     emailContent += `${label} ${value}\n`;
                 }
             });
 
-            // Only include order ID and additional comments if they are not empty
-            if (orderIdValue.trim() !== '') {
-                emailContent += `Order ID: ${orderIdValue}\n`;
-            }
-            if (commentsValue.trim() !== '') {
-                emailContent += `Additional Comments: ${commentsValue}\n`;
+            // Only include client number if it is not empty
+            if (clientNumberValue.trim() !== '') {
+                emailContent += `Client Number: ${clientNumberValue}\n`;
             }
 
             // Mark as viewed when email is sent
@@ -1485,8 +1471,7 @@ $result = $conn->query($sql);
                 <td>${domain.email_address}</td>
                 <td>${domain.customer_name}</td>
                 <td>${domain.customer_email}</td>
-                <td>${domain.order_id || '-'}</td>
-                <td>${domain.additional_comments || '-'}</td>
+                <td>${domain.client_number || '-'}</td>
                 <td>${createdDate}</td>
             `;
             

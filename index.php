@@ -502,15 +502,11 @@ $conn->close();
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Order ID (DU)</label>
-                        <input type="text" class="form-control" name="order_id" placeholder="Enter Order ID">
+                        <label>Client Number (Optional)</label>
+                        <input type="text" class="form-control" name="client_number" placeholder="Enter Client Number">
                     </div>
 
-                    <div class="form-group full-width">
-                        <label>Additional Comments</label>
-                        <textarea class="form-control" name="additional_comments"
-                            placeholder="Write your additional comments here..."></textarea>
-                    </div>
+                </div>
 
                 </div>
 
@@ -670,6 +666,24 @@ $conn->close();
                         <span class="receipt-label">Email Address:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
                     </div>
+                    <?php if (!empty($receipt_data['customer_name'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Customer Name:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_name']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($receipt_data['customer_email'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Customer Email:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_email']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($receipt_data['client_number'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Client Number:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['client_number']); ?></span>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
