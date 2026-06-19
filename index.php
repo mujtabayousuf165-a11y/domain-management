@@ -612,8 +612,9 @@ $conn->close();
         <div class="receipt-content" id="receiptContent">
             <button class="close-btn" onclick="closeReceiptPopup()">×</button>
             <div class="receipt-header">
-                <h2>🎉 Domain Registration Receipt</h2>
-                <p class="success">✓ Registration Successful!</p>
+                <img src="tik.gif" alt="">
+                <h2>Domain Registration Receipt</h2>
+                <p class="success">Registration Successful!</p>
                 <p style="color: #666; margin-top: 10px;">Date: <?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></p>
             </div>
 
@@ -655,44 +656,6 @@ $conn->close();
                     <div class="receipt-row">
                         <span class="receipt-label">Email Address:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
-                    </div>
-                </div>
-
-                <?php if (!empty($receipt_data['customer_name']) || !empty($receipt_data['customer_email']) || !empty($receipt_data['order_id']) || !empty($receipt_data['additional_comments'])): ?>
-                <div class="receipt-section">
-                    <h3>Contact Details</h3>
-                    <?php if (!empty($receipt_data['customer_name'])): ?>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Customer Name:</span>
-                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_name']); ?></span>
-                    </div>
-                    <?php endif; ?>
-                    <?php if (!empty($receipt_data['customer_email'])): ?>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Customer Email:</span>
-                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_email']); ?></span>
-                    </div>
-                    <?php endif; ?>
-                    <?php if (!empty($receipt_data['order_id'])): ?>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Order ID:</span>
-                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['order_id']); ?></span>
-                    </div>
-                    <?php endif; ?>
-                    <?php if (!empty($receipt_data['additional_comments'])): ?>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Additional Comments:</span>
-                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['additional_comments']); ?></span>
-                    </div>
-                    <?php endif; ?>
-                </div>
-                <?php endif; ?>
-
-                <div class="receipt-section">
-                    <h3>Timestamp</h3>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Client Date:</span>
-                        <span class="receipt-value"><?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></span>
                     </div>
                 </div>
             </div>
