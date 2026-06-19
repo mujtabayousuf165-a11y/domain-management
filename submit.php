@@ -89,8 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$order_id', '$additional_comments', NOW(), '$current_date')";
 
     if ($conn->query($sql) === TRUE) {
-        // Redirect back to index with success message
-        header("Location: index.php?success=1");
+        // Get the inserted ID
+        $inserted_id = $conn->insert_id;
+
+        // Redirect to index page with success parameter and inserted ID
+        header("Location: index.php?success=1&id=" . $inserted_id);
         exit();
     } else {
         // Redirect back with error message

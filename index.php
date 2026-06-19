@@ -1,3 +1,36 @@
+<?php
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Set timezone to UTC+05:00 (Pakistan)
+date_default_timezone_set('Asia/Karachi');
+
+// Database configuration
+$host = 'localhost';
+$username = 'domainrequestpor_domainrequest';
+$password = 'SPHDMA}J9ymihaKG';
+$database = 'domainrequestpor_management';
+
+// Create connection
+$conn = new mysqli($host, $username, $password, $database);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch receipt data if success=1
+$receipt_data = null;
+if (isset($_GET['success']) && $_GET['success'] == '1' && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $sql = "SELECT * FROM domains WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $receipt_data = $result->fetch_assoc();
+    }
+}
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +45,7 @@
         rel="stylesheet">
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         * {
@@ -193,6 +227,141 @@
             color: #3b82f6;
             border-radius: 14px;
             font-weight: 500;
+        }
+
+        /* Receipt Popup Styles */
+        .receipt-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .receipt-popup.active {
+            display: flex;
+        }
+
+        .receipt-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .receipt-header h2 {
+            color: #3b82f6;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .receipt-header .success {
+            color: #10b981;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .receipt-section {
+            margin-bottom: 20px;
+        }
+
+        .receipt-section h3 {
+            color: #3b82f6;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .receipt-value {
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            border-top: 2px dashed #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .receipt-btn {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .receipt-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .receipt-btn-secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @media(max-width: 768px) {
@@ -380,7 +549,158 @@
                 successMessage.style.display = "none";
             }, 5000);
         }
+
+        // Show receipt popup if receipt data is available
+        <?php if ($receipt_data): ?>
+            showReceiptPopup();
+        <?php endif; ?>
+
+        function showReceiptPopup() {
+            const popup = document.getElementById('receiptPopup');
+            if (popup) {
+                popup.classList.add('active');
+            }
+        }
+
+        function closeReceiptPopup() {
+            const popup = document.getElementById('receiptPopup');
+            if (popup) {
+                popup.classList.remove('active');
+            }
+        }
+
+        function takeReceiptScreenshot() {
+            const receiptContent = document.getElementById('receiptContent');
+
+            html2canvas(receiptContent, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                canvas.toBlob(blob => {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        navigator.clipboard.write([item]).then(() => {
+                            alert('Screenshot copied to clipboard! You can now paste it anywhere with Ctrl+V');
+                        }).catch(err => {
+                            console.error('Failed to copy to clipboard:', err);
+                            alert('Failed to copy to clipboard. Please try again.');
+                        });
+                    } catch (err) {
+                        console.error('Clipboard API not supported:', err);
+                        alert('Your browser does not support copying images to clipboard. Please try using a modern browser like Chrome or Edge.');
+                    }
+                });
+            }).catch(err => {
+                console.error('Failed to take screenshot:', err);
+                alert('Failed to take screenshot. Please try again.');
+            });
+        }
     </script>
+
+    <!-- Receipt Popup -->
+    <?php if ($receipt_data): ?>
+    <div class="receipt-popup" id="receiptPopup">
+        <div class="receipt-content" id="receiptContent">
+            <button class="close-btn" onclick="closeReceiptPopup()">×</button>
+            <div class="receipt-header">
+                <h2>🎉 Domain Registration Receipt</h2>
+                <p class="success">✓ Registration Successful!</p>
+                <p style="color: #666; margin-top: 10px;">Date: <?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></p>
+            </div>
+
+            <div class="receipt-body">
+                <div class="receipt-section">
+                    <h3>Domain Information</h3>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Domain ID:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['domain_id']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Domain Name:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['domain_name']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Registration Tenure:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['registration_tenure']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Domain For:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['domain_for']); ?></span>
+                    </div>
+                </div>
+
+                <div class="receipt-section">
+                    <h3>Personal Information</h3>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Your Name:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['your_name']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Unit Head Name:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['unit_head_name']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Project Cost:</span>
+                        <span class="receipt-value">$<?php echo htmlspecialchars($receipt_data['project_cost']); ?></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Email Address:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
+                    </div>
+                </div>
+
+                <?php if (!empty($receipt_data['customer_name']) || !empty($receipt_data['customer_email']) || !empty($receipt_data['order_id']) || !empty($receipt_data['additional_comments'])): ?>
+                <div class="receipt-section">
+                    <h3>Contact Details</h3>
+                    <?php if (!empty($receipt_data['customer_name'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Customer Name:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_name']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($receipt_data['customer_email'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Customer Email:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['customer_email']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($receipt_data['order_id'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Order ID:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['order_id']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($receipt_data['additional_comments'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Additional Comments:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['additional_comments']); ?></span>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
+
+                <div class="receipt-section">
+                    <h3>Timestamp</h3>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Client Date:</span>
+                        <span class="receipt-value"><?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <p>Thank you for your domain registration!</p>
+                <p style="font-size: 12px; margin-top: 5px;">This receipt is automatically generated</p>
+            </div>
+
+            <div class="receipt-actions">
+                <button class="receipt-btn" onclick="takeReceiptScreenshot()">📸 Take Screenshot</button>
+                <button class="receipt-btn receipt-btn-secondary" onclick="closeReceiptPopup()">✓ Done</button>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
 </body>
 
