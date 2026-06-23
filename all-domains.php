@@ -1080,7 +1080,7 @@ $result = $conn->query($sql);
                         console.log('Email sent marked successfully');
 
                         // CC emails
-                        const ccEmails = 'domain@domainrequestportal.com,ashad.khan@thetechrics.com';
+                        const ccEmails = 'domain@domainrequestportal.com,ashhad.ali@thetechrics.com';
 
                         // Add domain type to subject if selected
                         const emailSubject = domainType ? `${title} (${domainType})` : title;
