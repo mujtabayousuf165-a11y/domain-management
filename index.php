@@ -588,6 +588,21 @@ $conn->close();
                 return;
             }
 
+            // Check domain name field for multiple domains
+            const domainNameInput = document.querySelector('input[name="domain_name"]');
+            if (domainNameInput) {
+                const domainValue = domainNameInput.value.trim();
+                // Check for multiple domains (separated by spaces, commas, semicolons, or newlines)
+                const domains = domainValue.split(/[\s,;\n]+/).filter(d => d.length > 0);
+                if (domains.length > 1) {
+                    domainNameInput.style.borderColor = '#ef4444';
+                    domainNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    domainNameInput.focus();
+                    alert('Please enter only one domain name at a time. Multiple domains are not allowed.');
+                    return;
+                }
+            }
+
             // Check reCAPTCHA
             const recaptchaResponse = document.querySelector('.g-recaptcha-response');
             if (!recaptchaResponse || !recaptchaResponse.value) {
