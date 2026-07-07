@@ -667,6 +667,7 @@ $conn->close();
                 <div class="tikimg"><img src="tik.gif" alt=""></div>
                 <h2>Domain Registration Receipt</h2>    
                 <p class="success">Registration Successful!</p>
+                <p class="infoparaaa">Your domain request has been received and is being processed. You will receive an email update once the domain purchase and registration process is completed.</p>
                 <p style="color: #666; margin-top: 10px;">Date: <?php echo date('M d, Y h:i A', strtotime($receipt_data['client_date'] ?? $receipt_data['created_at'])); ?></p>
             </div>
 
