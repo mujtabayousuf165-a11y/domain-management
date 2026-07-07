@@ -104,7 +104,11 @@ $conn->close();
     object-fit: contain;
     scale: 2.4;
 }
-
+.infoparaaa {
+    font-size: 12px;
+    width: 80%;
+    margin: 10px auto 0;
+}
         .title {
             font-size: 42px;
             font-weight: 700;
