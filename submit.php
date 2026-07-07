@@ -65,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $unit_head_name = $conn->real_escape_string($_POST['unit_head_name']);
     $project_cost = $conn->real_escape_string($_POST['project_cost']);
     $email_address = $conn->real_escape_string($_POST['email_address']);
+    $brand_url = isset($_POST['brand_url']) ? $conn->real_escape_string($_POST['brand_url']) : '';
     $customer_name = $conn->real_escape_string($_POST['customer_name']);
     $customer_email = $conn->real_escape_string($_POST['customer_email']);
     $client_number = isset($_POST['client_number']) ? $conn->real_escape_string($_POST['client_number']) : '';
@@ -84,8 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_date = $client_date;
 
     // Insert data into database
-    $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, customer_name, customer_email, client_number, created_at, client_date)
-            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$customer_name', '$customer_email', '$client_number', NOW(), '$current_date')";
+    $sql = "INSERT INTO domains (domain_id, domain_name, registration_tenure, domain_for, buying_as, your_name, unit_head_name, project_cost, email_address, brand_url, customer_name, customer_email, client_number, created_at, client_date)
+            VALUES ('$unique_id', '$domain_name', '$registration_tenure', '$domain_for', '$buying_as', '$your_name', '$unit_head_name', '$project_cost', '$email_address', '$brand_url', '$customer_name', '$customer_email', '$client_number', NOW(), '$current_date')";
 
     if ($conn->query($sql) === TRUE) {
         // Get the inserted ID

@@ -484,6 +484,11 @@ $conn->close();
                         <input type="email" class="form-control" name="email_address" placeholder="Enter Email Address" required>
                     </div>
 
+                    <div class="form-group">
+                        <label>Brand URL</label>
+                        <input type="url" class="form-control" name="brand_url" placeholder="https://example.com">
+                    </div>
+
                 </div>
 
                 <!-- CUSTOMER INFORMATION -->
@@ -663,6 +668,12 @@ $conn->close();
                         <span class="receipt-label">Email Address:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
                     </div>
+                    <?php if (!empty($receipt_data['brand_url'])): ?>
+                    <div class="receipt-row">
+                        <span class="receipt-label">Brand URL:</span>
+                        <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['brand_url']); ?></span>
+                    </div>
+                    <?php endif; ?>
                     <?php if (!empty($receipt_data['customer_name'])): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Customer Name:</span>

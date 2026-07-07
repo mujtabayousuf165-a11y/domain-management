@@ -937,6 +937,10 @@ $result = $conn->query($sql);
                     value: data.email_address
                 },
                 {
+                    label: 'Brand URL',
+                    value: data.brand_url || '-'
+                },
+                {
                     label: 'Customer Name',
                     value: data.customer_name
                 },
@@ -1080,7 +1084,7 @@ $result = $conn->query($sql);
                         console.log('Email sent marked successfully');
 
                         // CC emails
-                        const ccEmails = 'domain@domainrequestportal.com,ashhad.ali@thetechrics.com';
+                        const ccEmails = 'domain@domainrequestportal.com;ashhad.ali@thetechrics.com';
 
                         // Add domain type to subject if selected
                         const emailSubject = domainType ? `${title} (${domainType})` : title;
@@ -1473,6 +1477,7 @@ $result = $conn->query($sql);
                 <td>${domain.unit_head_name}</td>
                 <td>$${domain.project_cost || '0'}</td>
                 <td>${domain.email_address}</td>
+                <td>${domain.brand_url || '-'}</td>
                 <td>${domain.customer_name}</td>
                 <td>${domain.customer_email}</td>
                 <td>${domain.client_number || '-'}</td>
