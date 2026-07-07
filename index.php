@@ -485,8 +485,8 @@ $conn->close();
                     </div>
 
                     <div class="form-group">
-                        <label>Brand URL</label>
-                        <input type="url" class="form-control" name="brand_url" placeholder="https://example.com">
+                        <label>Brand URL *</label>
+                        <input type="url" class="form-control" name="brand_url" placeholder="https://example.com" required>
                     </div>
 
                 </div>
@@ -553,8 +553,49 @@ $conn->close();
 
         // Save unit head name when form is submitted
         form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Remove previous error styles
+            const allInputs = form.querySelectorAll('input[required], select[required]');
+            allInputs.forEach(input => {
+                input.style.borderColor = '';
+            });
+
+            // Check all required fields
+            let firstEmptyField = null;
+            let hasEmptyField = false;
+
+            allInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    hasEmptyField = true;
+                    input.style.borderColor = '#ef4444';
+                    if (!firstEmptyField) {
+                        firstEmptyField = input;
+                    }
+                }
+            });
+
+            // If there are empty required fields, scroll to the first one and prevent submission
+            if (hasEmptyField) {
+                if (firstEmptyField) {
+                    firstEmptyField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstEmptyField.focus();
+                }
+                return;
+            }
+
+            // Check reCAPTCHA
+            const recaptchaResponse = document.querySelector('.g-recaptcha-response');
+            if (!recaptchaResponse || !recaptchaResponse.value) {
+                alert('Please complete the reCAPTCHA verification');
+                return;
+            }
+
             // Update client date just before submission
             updateClientDate();
+
+            // Submit the form
+            form.submit();
         });
 
         // Check for success parameter in URL
@@ -668,12 +709,10 @@ $conn->close();
                         <span class="receipt-label">Email Address:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
                     </div>
-                    <?php if (!empty($receipt_data['brand_url'])): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Brand URL:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['brand_url']); ?></span>
                     </div>
-                    <?php endif; ?>
                     <?php if (!empty($receipt_data['customer_name'])): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Customer Name:</span>
