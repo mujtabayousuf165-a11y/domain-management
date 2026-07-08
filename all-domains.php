@@ -1469,7 +1469,7 @@ $result = $conn->query($sql);
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="checkbox" class="row-checkbox" value="${domain.id}" onchange="updateDeleteButton()"></td>
-                <td><a href="#" onclick="showDetails(${domain.id})" style="color: #1e40af; text-decoration: none; font-weight: 500;">${domain.domain_name}</a></td>
+                <td style="width: 30%;"><a href="#" onclick="showDetails(${domain.id})" style="color: #1e40af; text-decoration: none; font-weight: 500;">${domain.domain_name}</a></td>
                 <td>${domain.registration_tenure}</td>
                 <td>${domain.domain_for}</td>
                 <td>${domain.buying_as}</td>
