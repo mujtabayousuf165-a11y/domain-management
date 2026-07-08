@@ -409,7 +409,7 @@ $result = $conn->query($sql);
         }
 
         .modal-title {
-            font-size: 28px;
+            font-size: 18px;
             font-weight: 700;
             margin-bottom: 10px;
             color: #111827;
