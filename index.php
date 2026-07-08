@@ -109,6 +109,102 @@ $conn->close();
     width: 80%;
     margin: 10px auto 0;
 }
+
+        /* Toaster Notification Styles */
+        .toaster-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toaster {
+            min-width: 300px;
+            max-width: 400px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toaster.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toaster.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toaster.warning {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .toaster-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toaster-message {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .toaster-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toaster-close:hover {
+            color: #333;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .toaster.removing {
+            animation: slideOut 0.3s ease-in forwards;
+        }
+
         .title {
             font-size: 42px;
             font-weight: 700;
@@ -532,10 +628,50 @@ $conn->close();
         </div>
     </div>
 
+    <!-- Toaster Container -->
+    <div class="toaster-container" id="toasterContainer"></div>
+
     <script>
         const form = document.getElementById('domainForm');
         const successMessage = document.getElementById('successMessage');
         const captcha = document.getElementById('captcha');
+
+        // Toaster Notification Functions
+        function showToaster(message, type = 'error', duration = 5000) {
+            const container = document.getElementById('toasterContainer');
+            if (!container) return;
+
+            const toaster = document.createElement('div');
+            toaster.className = `toaster ${type}`;
+
+            let icon = '';
+            if (type === 'error') icon = '❌';
+            else if (type === 'success') icon = '✅';
+            else if (type === 'warning') icon = '⚠️';
+
+            toaster.innerHTML = `
+                <span class="toaster-icon">${icon}</span>
+                <span class="toaster-message">${message}</span>
+                <button class="toaster-close" onclick="removeToaster(this)">×</button>
+            `;
+
+            container.appendChild(toaster);
+
+            // Auto-remove after duration
+            setTimeout(() => {
+                removeToaster(toaster.querySelector('.toaster-close'));
+            }, duration);
+        }
+
+        function removeToaster(closeBtn) {
+            const toaster = closeBtn.closest('.toaster');
+            if (toaster && !toaster.classList.contains('removing')) {
+                toaster.classList.add('removing');
+                setTimeout(() => {
+                    toaster.remove();
+                }, 300);
+            }
+        }
 
         // Function to update client date input
         function updateClientDate() {
@@ -598,7 +734,7 @@ $conn->close();
                     domainNameInput.style.borderColor = '#ef4444';
                     domainNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     domainNameInput.focus();
-                    alert('Please enter only one domain name at a time. Multiple domains are not allowed.');
+                    showToaster('Please enter only one domain name at a time. Multiple domains are not allowed.', 'error');
                     return;
                 }
             }
@@ -606,7 +742,7 @@ $conn->close();
             // Check reCAPTCHA
             const recaptchaResponse = document.querySelector('.g-recaptcha-response');
             if (!recaptchaResponse || !recaptchaResponse.value) {
-                alert('Please complete the reCAPTCHA verification');
+                showToaster('Please complete the reCAPTCHA verification', 'warning');
                 return;
             }
 
@@ -661,19 +797,19 @@ $conn->close();
                     try {
                         const item = new ClipboardItem({ 'image/png': blob });
                         navigator.clipboard.write([item]).then(() => {
-                            alert('Screenshot copied to clipboard! You can now paste it anywhere with Ctrl+V');
+                            showToaster('Screenshot copied to clipboard! You can now paste it anywhere with Ctrl+V', 'success');
                         }).catch(err => {
                             console.error('Failed to copy to clipboard:', err);
-                            alert('Failed to copy to clipboard. Please try again.');
+                            showToaster('Failed to copy to clipboard. Please try again.', 'error');
                         });
                     } catch (err) {
                         console.error('Clipboard API not supported:', err);
-                        alert('Your browser does not support copying images to clipboard. Please try using a modern browser like Chrome or Edge.');
+                        showToaster('Your browser does not support copying images to clipboard. Please try using a modern browser like Chrome or Edge.', 'error');
                     }
                 });
             }).catch(err => {
                 console.error('Failed to take screenshot:', err);
-                alert('Failed to take screenshot. Please try again.');
+                showToaster('Failed to take screenshot. Please try again.', 'error');
             });
         }
     </script>
