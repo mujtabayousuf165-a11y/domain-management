@@ -713,7 +713,7 @@ $result = $conn->query($sql);
                             <tr class="<?php echo $row['is_viewed'] == 0 ? 'new' : ''; ?>" onclick="openModal(<?php echo htmlspecialchars($rowData, ENT_QUOTES); ?>)" data-domain-for="<?php echo strtolower($row['domain_for']); ?>" data-domain-id="<?php echo $row['id']; ?>">
                                 <td onclick="event.stopPropagation();"><input type="checkbox" class="row-checkbox" value="<?php echo $row['id']; ?>" onchange="updateDeleteButton()"></td>
                                 <td><?php echo $serialNumber++; ?></td>
-                                <td style="font-size: 16px;"><b><?php echo htmlspecialchars($row['domain_name']); ?></b></td>
+                                <td style="font-size: 16px; width: 30%;"><b><?php echo htmlspecialchars($row['domain_name']); ?></b></td>
                                 <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
                                 <td><span class="badge"><?php echo htmlspecialchars($row['registration_tenure']); ?></span></td>
                                 <td><?php echo getDomainStatus($row['registration_tenure'], $row['client_date'] ?? $row['created_at'], $row['email_sent']); ?></td>
@@ -1469,7 +1469,7 @@ $result = $conn->query($sql);
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="checkbox" class="row-checkbox" value="${domain.id}" onchange="updateDeleteButton()"></td>
-                <td style="width: 30%;"><a href="#" onclick="showDetails(${domain.id})" style="color: #1e40af; text-decoration: none; font-weight: 500;">${domain.domain_name}</a></td>
+                <td><a href="#" onclick="showDetails(${domain.id})" style="color: #1e40af; text-decoration: none; font-weight: 500;">${domain.domain_name}</a></td>
                 <td>${domain.registration_tenure}</td>
                 <td>${domain.domain_for}</td>
                 <td>${domain.buying_as}</td>
