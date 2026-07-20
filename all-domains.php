@@ -934,30 +934,41 @@ $result = $conn->query($sql);
                 {
                     label: 'Unit Head Name',
                     value: data.unit_head_name
-                },
-                {
-                    label: 'Project Cost',
-                    value: '$' + (data.project_cost || '0')
                 }
             ];
+
+            // Add Project Cost only for client domains
+            if (data.domain_for && data.domain_for.toLowerCase() === 'client') {
+                box1Fields.push({
+                    label: 'Project Cost',
+                    value: '$' + (data.project_cost || '0')
+                });
+            }
 
             const box2Fields = [{
                     label: 'Email Address',
                     value: data.email_address
-                },
-                {
+                }
+            ];
+
+            // Add Brand URL, Customer Name, Customer Email only for client domains
+            if (data.domain_for && data.domain_for.toLowerCase() === 'client') {
+                box2Fields.push({
                     label: 'Brand URL',
                     value: data.brand_url || '-'
-                },
-                {
+                });
+                box2Fields.push({
                     label: 'Customer Name',
                     value: data.customer_name
-                },
-                {
+                });
+                box2Fields.push({
                     label: 'Customer Email',
                     value: data.customer_email
-                },
-                {
+                });
+            }
+
+            // Add Client Number and Client Date for both types
+            box2Fields.push({
                     label: 'Client Number',
                     value: data.client_number || '-'
                 },
@@ -1077,10 +1088,13 @@ $result = $conn->query($sql);
                 emailContent += `Client Number: ${clientNumberValue}\n`;
             }
 
-            // Add project cost from input field
-            const projectCostValue = projectCostInput.value.trim();
-            if (projectCostValue !== '') {
-                emailContent += `Project Cost: $${projectCostValue}\n`;
+            // Add project cost from input field only for brand domains
+            const domainFor = data.domain_for ? data.domain_for.toLowerCase() : '';
+            if (domainFor === 'brand') {
+                const projectCostValue = projectCostInput.value.trim();
+                if (projectCostValue !== '') {
+                    emailContent += `Project Cost: $${projectCostValue}\n`;
+                }
             }
 
             // Mark as viewed when email is sent
