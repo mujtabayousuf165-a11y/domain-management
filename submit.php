@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $buying_as = $conn->real_escape_string($_POST['buying_as']);
     $your_name = $conn->real_escape_string($_POST['your_name']);
     $unit_head_name = $conn->real_escape_string($_POST['unit_head_name']);
-    $project_cost = isset($_POST['project_cost']) ? $conn->real_escape_string($_POST['project_cost']) : '0';
+    $project_cost = isset($_POST['project_cost']) && $_POST['project_cost'] !== '' ? $conn->real_escape_string($_POST['project_cost']) : '0';
     $email_address = $conn->real_escape_string($_POST['email_address']);
     $brand_url = isset($_POST['brand_url']) ? $conn->real_escape_string($_POST['brand_url']) : '';
     $customer_name = isset($_POST['customer_name']) ? $conn->real_escape_string($_POST['customer_name']) : '';
