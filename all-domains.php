@@ -973,7 +973,7 @@ $result = $conn->query($sql);
                 value: data.client_number || '-'
             });
             box2Fields.push({
-                label: 'Client Date',
+                label: 'Date',
                 value: data.client_date ? new Date(data.client_date).toLocaleString() : '-'
             });
 
@@ -1088,7 +1088,16 @@ $result = $conn->query($sql);
             }
 
             // Add project cost from input field only for brand domains
-            const domainFor = data.domain_for ? data.domain_for.toLowerCase() : '';
+            // Get domain_for from box1 content
+            let domainFor = '';
+            const box1Items = box1.querySelectorAll('.modal-data-item');
+            box1Items.forEach(item => {
+                const label = item.querySelector('.modal-data-label').textContent;
+                if (label === 'Domain For:') {
+                    domainFor = item.querySelector('.modal-data-value').textContent.toLowerCase();
+                }
+            });
+
             if (domainFor === 'brand') {
                 const projectCostValue = projectCostInput.value.trim();
                 if (projectCostValue !== '') {
