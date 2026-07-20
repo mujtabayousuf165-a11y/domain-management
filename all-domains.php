@@ -969,14 +969,13 @@ $result = $conn->query($sql);
 
             // Add Client Number and Client Date for both types
             box2Fields.push({
-                    label: 'Client Number',
-                    value: data.client_number || '-'
-                },
-                {
-                    label: 'Client Date',
-                    value: data.client_date ? new Date(data.client_date).toLocaleString() : '-'
-                }
-            ];
+                label: 'Client Number',
+                value: data.client_number || '-'
+            });
+            box2Fields.push({
+                label: 'Client Date',
+                value: data.client_date ? new Date(data.client_date).toLocaleString() : '-'
+            });
 
             // Populate box 1
             let box1HTML = '<h3>Domain Information</h3>';
