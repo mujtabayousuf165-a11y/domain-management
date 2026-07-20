@@ -532,7 +532,7 @@ $conn->close();
 
                     <div class="form-group">
                         <label>Domain For *</label>
-                        <select class="form-control" name="domain_for" required>
+                        <select class="form-control" name="domain_for" id="domainFor" required>
                             <option value="">Select Domain Type</option>
                             <option value="client">Client</option>
                             <option value="brand">Brand</option>
@@ -574,7 +574,7 @@ $conn->close();
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="projectCostField">
                         <label>Project Cost *</label>
                         <input type="number" step="0.01" class="form-control" name="project_cost" placeholder="Enter Project Cost" required>
                     </div>
@@ -584,7 +584,7 @@ $conn->close();
                         <input type="email" class="form-control" name="email_address" placeholder="Enter Email Address" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="brandUrlField">
                         <label>Brand URL *</label>
                         <input type="url" class="form-control" name="brand_url" placeholder="https://example.com" required>
                     </div>
@@ -592,9 +592,9 @@ $conn->close();
                 </div>
 
                 <!-- CUSTOMER INFORMATION -->
-                <h2 class="section-title">Customer Information</h2>
+                <h2 class="section-title" id="customerInfoTitle">Customer Information</h2>
 
-                <div class="form-grid">
+                <div class="form-grid" id="customerInfoSection">
 
                     <div class="form-group">
                         <label>Customer Name *</label>
@@ -684,6 +684,44 @@ $conn->close();
                 String(now.getSeconds()).padStart(2, '0');
             document.getElementById('clientDate').value = clientDate;
         }
+
+        // Function to show/hide fields based on domain_for selection
+        function toggleFieldsBasedOnDomainFor() {
+            const domainFor = document.getElementById('domainFor').value;
+            const projectCostField = document.getElementById('projectCostField');
+            const brandUrlField = document.getElementById('brandUrlField');
+            const customerInfoSection = document.getElementById('customerInfoSection');
+            const customerInfoTitle = document.getElementById('customerInfoTitle');
+
+            if (domainFor === 'brand') {
+                // Hide these fields for Brand
+                projectCostField.style.display = 'none';
+                brandUrlField.style.display = 'none';
+                customerInfoSection.style.display = 'none';
+                customerInfoTitle.style.display = 'none';
+
+                // Remove required attribute from hidden fields
+                document.querySelector('input[name="project_cost"]').required = false;
+                document.querySelector('input[name="brand_url"]').required = false;
+                document.querySelector('input[name="customer_name"]').required = false;
+                document.querySelector('input[name="customer_email"]').required = false;
+            } else {
+                // Show these fields for Client
+                projectCostField.style.display = 'block';
+                brandUrlField.style.display = 'block';
+                customerInfoSection.style.display = 'grid';
+                customerInfoTitle.style.display = 'block';
+
+                // Add required attribute back
+                document.querySelector('input[name="project_cost"]').required = true;
+                document.querySelector('input[name="brand_url"]').required = true;
+                document.querySelector('input[name="customer_name"]').required = true;
+                document.querySelector('input[name="customer_email"]').required = true;
+            }
+        }
+
+        // Add event listener to domain_for dropdown
+        document.getElementById('domainFor').addEventListener('change', toggleFieldsBasedOnDomainFor);
 
         // Update client date on page load
         updateClientDate();
