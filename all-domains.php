@@ -789,6 +789,11 @@ $result = $conn->query($sql);
                     </div>
                     </div>
 
+                    <div style="margin-top: 12px;">
+                        <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Project Cost ($):</label>
+                        <input type="number" step="0.01" class="email-input" id="projectCostInput" style="margin-bottom: 12px;" placeholder="Enter project cost">
+                    </div>
+
                     <input type="email" class="email-input" style="margin-top: 16px; margin-bottom: 20px;" id="emailInput" placeholder="Enter email address to send data">
                     <button class="send-btn" id="sendBtn" onclick="sendEmail()">Send to Email</button>
                 </div>
@@ -878,6 +883,7 @@ $result = $conn->query($sql);
             const title = document.getElementById('modalTitle');
             const emailInput = document.getElementById('emailInput');
             const createdDateInput = document.getElementById('createdDateInput');
+            const projectCostInput = document.getElementById('projectCostInput');
 
             // Store the database ID in modal data attribute
             modal.setAttribute('data-domain-id', data.id);
@@ -896,6 +902,9 @@ $result = $conn->query($sql);
             const day = String(createdDate.getDate()).padStart(2, '0');
             const formattedDate = `${year}-${month}-${day}`;
             createdDateInput.value = formattedDate;
+
+            // Pre-fill project cost input
+            projectCostInput.value = data.project_cost || '';
 
             // Split fields into two groups
             const box1Fields = [{
@@ -1066,6 +1075,12 @@ $result = $conn->query($sql);
             // Only include client number if it is not empty
             if (clientNumberValue.trim() !== '') {
                 emailContent += `Client Number: ${clientNumberValue}\n`;
+            }
+
+            // Add project cost from input field
+            const projectCostValue = projectCostInput.value.trim();
+            if (projectCostValue !== '') {
+                emailContent += `Project Cost: $${projectCostValue}\n`;
             }
 
             // Mark as viewed when email is sent

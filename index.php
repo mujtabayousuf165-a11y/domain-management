@@ -895,18 +895,22 @@ $conn->close();
                         <span class="receipt-label">Unit Head Name:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['unit_head_name']); ?></span>
                     </div>
+                    <?php if ($receipt_data['domain_for'] !== 'brand' && !empty($receipt_data['project_cost']) && $receipt_data['project_cost'] != '0'): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Project Cost:</span>
                         <span class="receipt-value">$<?php echo htmlspecialchars($receipt_data['project_cost']); ?></span>
                     </div>
+                    <?php endif; ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Email Address:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['email_address']); ?></span>
                     </div>
+                    <?php if (!empty($receipt_data['brand_url'])): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Brand URL:</span>
                         <span class="receipt-value"><?php echo htmlspecialchars($receipt_data['brand_url']); ?></span>
                     </div>
+                    <?php endif; ?>
                     <?php if (!empty($receipt_data['customer_name'])): ?>
                     <div class="receipt-row">
                         <span class="receipt-label">Customer Name:</span>
