@@ -789,7 +789,7 @@ $result = $conn->query($sql);
                     </div>
                     </div>
 
-                    <div style="margin-top: 12px;">
+                    <div id="projectCostGroup" style="margin-top: 12px; display: none;">
                         <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Project Cost ($):</label>
                         <input type="number" step="0.01" class="email-input" id="projectCostInput" style="margin-bottom: 12px;" placeholder="Enter project cost">
                     </div>
@@ -883,7 +883,10 @@ $result = $conn->query($sql);
             const title = document.getElementById('modalTitle');
             const emailInput = document.getElementById('emailInput');
             const createdDateInput = document.getElementById('createdDateInput');
+            const projectCostGroup = document.getElementById('projectCostGroup');
             const projectCostInput = document.getElementById('projectCostInput');
+            const isBrandDomain = data.domain_for && data.domain_for.toLowerCase() === 'brand';
+            const savedProjectCost = parseFloat(data.project_cost);
 
             // Store the database ID in modal data attribute
             modal.setAttribute('data-domain-id', data.id);
@@ -903,8 +906,8 @@ $result = $conn->query($sql);
             const formattedDate = `${year}-${month}-${day}`;
             createdDateInput.value = formattedDate;
 
-            // Pre-fill project cost input
-            projectCostInput.value = data.project_cost || '';
+            projectCostGroup.style.display = isBrandDomain ? 'block' : 'none';
+            projectCostInput.value = isBrandDomain && savedProjectCost > 0 ? data.project_cost : '';
 
             // Split fields into two groups
             const box1Fields = [{
@@ -937,7 +940,7 @@ $result = $conn->query($sql);
                 }
             ];
 
-            // Add Project Cost only for client domains
+            // Add saved Project Cost only for client domains
             if (data.domain_for && data.domain_for.toLowerCase() === 'client') {
                 box1Fields.push({
                     label: 'Project Cost',
@@ -1035,6 +1038,7 @@ $result = $conn->query($sql);
             const box2 = document.getElementById('modalBox2');
             const title = document.getElementById('modalTitle').textContent;
             const domainType = document.getElementById('domainType').value;
+            const projectCostInput = document.getElementById('projectCostInput');
 
             // Get database ID from box 1 (not domain_id)
             const domainId = box1.querySelector('.modal-data-item:nth-child(2) .modal-data-value').textContent;
