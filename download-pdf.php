@@ -135,7 +135,7 @@ $html = '
                 <th>Buying As</th>
                 <th>Your Name</th>
                 <th>Unit Head Name</th>
-                <th>Project Cost</th>
+                <th>Domain Cost</th>
                 <th>Email</th>
                 <th>Customer Name</th>
                 <th>Customer Email</th>

@@ -790,8 +790,8 @@ $result = $conn->query($sql);
                     </div>
 
                     <div id="projectCostGroup" style="margin-top: 12px; display: none;">
-                        <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Project Cost ($):</label>
-                        <input type="number" step="0.01" class="email-input" id="projectCostInput" style="margin-bottom: 12px;" placeholder="Enter project cost">
+                        <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Domain Cost ($):</label>
+                        <input type="number" step="0.01" class="email-input" id="projectCostInput" style="margin-bottom: 12px;" placeholder="Enter domain cost">
                     </div>
 
                     <input type="email" class="email-input" style="margin-top: 16px; margin-bottom: 20px;" id="emailInput" placeholder="Enter email address to send data">
@@ -940,10 +940,10 @@ $result = $conn->query($sql);
                 }
             ];
 
-            // Add saved Project Cost only for client domains
+            // Add saved Domain Cost only for client domains
             if (data.domain_for && data.domain_for.toLowerCase() === 'client') {
                 box1Fields.push({
-                    label: 'Project Cost',
+                    label: 'Domain Cost',
                     value: '$' + (data.project_cost || '0')
                 });
             }
@@ -1091,7 +1091,7 @@ $result = $conn->query($sql);
                 emailContent += `Client Number: ${clientNumberValue}\n`;
             }
 
-            // Add project cost from input field only for brand domains
+            // Add domain cost from input field only for brand domains
             // Get domain_for from box1 content
             let domainFor = '';
             box1Items.forEach(item => {
@@ -1104,7 +1104,7 @@ $result = $conn->query($sql);
             if (domainFor === 'brand') {
                 const projectCostValue = projectCostInput.value.trim();
                 if (projectCostValue !== '') {
-                    emailContent += `Project Cost: $${projectCostValue}\n`;
+                    emailContent += `Domain Cost: $${projectCostValue}\n`;
                 }
             }
 

@@ -575,8 +575,8 @@ $conn->close();
                     </div>
 
                     <div class="form-group" id="projectCostField">
-                        <label>Project Cost *</label>
-                        <input type="number" step="0.01" class="form-control" name="project_cost" placeholder="Enter Project Cost" required>
+                        <label>Domain Cost *</label>
+                        <input type="number" step="0.01" class="form-control" name="project_cost" placeholder="Enter Domain Cost" required>
                     </div>
 
                     <div class="form-group">
@@ -897,7 +897,7 @@ $conn->close();
                     </div>
                     <?php if ($receipt_data['domain_for'] !== 'brand' && !empty($receipt_data['project_cost']) && $receipt_data['project_cost'] != '0'): ?>
                     <div class="receipt-row">
-                        <span class="receipt-label">Project Cost:</span>
+                        <span class="receipt-label">Domain Cost:</span>
                         <span class="receipt-value">$<?php echo htmlspecialchars($receipt_data['project_cost']); ?></span>
                     </div>
                     <?php endif; ?>

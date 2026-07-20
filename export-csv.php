@@ -83,7 +83,7 @@ $headers = [
     'Buying As',
     'Your Name',
     'Unit Head Name',
-    'Project Cost',
+    'Domain Cost',
     'Email Address',
     'Customer Name',
     'Customer Email',
