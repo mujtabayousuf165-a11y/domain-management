@@ -1090,7 +1090,6 @@ $result = $conn->query($sql);
             // Add project cost from input field only for brand domains
             // Get domain_for from box1 content
             let domainFor = '';
-            const box1Items = box1.querySelectorAll('.modal-data-item');
             box1Items.forEach(item => {
                 const label = item.querySelector('.modal-data-label').textContent;
                 if (label === 'Domain For:') {
