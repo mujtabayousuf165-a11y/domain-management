@@ -217,7 +217,7 @@ $conn->close();
                         <span class="receipt-value"><?php echo htmlspecialchars($data['unit_head_name']); ?></span>
                     </div>
                     <div class="receipt-row">
-                        <span class="receipt-label">Domain Cost:</span>
+                        <span class="receipt-label">Domain Price:</span>
                         <span class="receipt-value">$<?php echo htmlspecialchars($data['project_cost']); ?></span>
                     </div>
                     <div class="receipt-row">
