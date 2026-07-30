@@ -607,8 +607,8 @@ $conn->close();
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Client Number (Optional)</label>
-                        <input type="text" class="form-control" name="client_number" placeholder="Enter Client Number">
+                        <label>Client Number *</label>
+                        <input type="text" class="form-control" name="client_number" placeholder="Enter Client Number" required>
                     </div>
 
                 </div>

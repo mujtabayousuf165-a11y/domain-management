@@ -69,8 +69,19 @@ function getExpiryDate($createdAt)
     return $expiryDate->format('M d, Y');
 }
 
-// Fetch all domains from database
-$sql = "SELECT * FROM domains ORDER BY id DESC";
+// Pagination settings
+$records_per_page = 10;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $records_per_page;
+
+// Get total records count
+$count_sql = "SELECT COUNT(*) as total FROM domains";
+$count_result = $conn->query($count_sql);
+$total_records = $count_result->fetch_assoc()['total'];
+$total_pages = ceil($total_records / $records_per_page);
+
+// Fetch domains with pagination
+$sql = "SELECT * FROM domains ORDER BY id DESC LIMIT $records_per_page OFFSET $offset";
 $result = $conn->query($sql);
 
 // No longer using time threshold, using is_viewed instead
@@ -613,6 +624,38 @@ $result = $conn->query($sql);
             padding: 12px 20px;
         }
 
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 20px 0;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: white;
+            border-color: #3b82f6;
+        }
+
         @media(max-width: 768px) {
             .form-box {
                 padding: 30px 22px;
@@ -738,6 +781,25 @@ $result = $conn->query($sql);
                     <?php endif; ?>
                 </tbody>
             </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="pagination-btn">Previous</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <?php if ($i == $page): ?>
+                        <span class="pagination-btn active"><?php echo $i; ?></span>
+                    <?php else: ?>
+                        <a href="?page=<?php echo $i; ?>" class="pagination-btn"><?php echo $i; ?></a>
+                    <?php endif; ?>
+                <?php endfor; ?>
+
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="pagination-btn">Next</a>
+                <?php endif; ?>
+            </div>
 
             <!-- Email Credentials Modal -->
             <div class="modal" id="emailModal">
