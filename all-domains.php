@@ -725,8 +725,6 @@ $result = $conn->query($sql);
                         <button class="emails-btn expBtn" onclick="exportSelected('pdf')">Export PDF</button>
                     </div>
 
-                    <div id="pagination" style=" display: flex; gap: 8px; flex-wrap: wrap; justify-content: end;"></div>
-
                 </div>
             </div>
             <table class="data-table" id="dataTable">
@@ -1412,17 +1410,12 @@ $result = $conn->query($sql);
             window.open(url, '_blank');
         }
 
-        // Pagination and search variables
-        let currentPage = 1;
-        const itemsPerPage = 12;
-        let allCards = [];
+        // Search variables
         let currentTab = 'all';
         let currentDomainId = null;
 
-        // Initialize pagination and search
+        // Initialize search
         document.addEventListener('DOMContentLoaded', function() {
-            allCards = Array.from(document.querySelectorAll('#dataTable tbody tr'));
-            setupPagination();
             filterCards();
         });
 
@@ -1449,60 +1442,6 @@ $result = $conn->query($sql);
                 const matchesTab = currentTab === 'all' || domainFor === currentTab;
 
                 if (matchesSearch && matchesTab) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            currentPage = 1;
-            setupPagination();
-            showPage(currentPage);
-        }
-
-        function setupPagination() {
-            const visibleRows = Array.from(document.querySelectorAll('#dataTable tbody tr')).filter(row => row.style.display !== 'none');
-            const totalPages = Math.ceil(visibleRows.length / itemsPerPage);
-            const pagination = document.getElementById('pagination');
-
-            let html = '';
-
-            // Previous button
-            html += `<button class="pagination-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                    html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-                } else if (i === currentPage - 2 || i === currentPage + 2) {
-                    html += `<span class="pagination-dots">...</span>`;
-                }
-            }
-
-            // Next button
-            html += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
-
-            pagination.innerHTML = html;
-        }
-
-        function changePage(page) {
-            const visibleRows = Array.from(document.querySelectorAll('#dataTable tbody tr')).filter(row => row.style.display !== 'none');
-            const totalPages = Math.ceil(visibleRows.length / itemsPerPage);
-
-            if (page < 1 || page > totalPages) return;
-
-            currentPage = page;
-            showPage(currentPage);
-            setupPagination();
-        }
-
-        function showPage(page) {
-            const visibleRows = Array.from(document.querySelectorAll('#dataTable tbody tr')).filter(row => row.style.display !== 'none');
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-
-            visibleRows.forEach((row, index) => {
-                if (index >= startIndex && index < endIndex) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
