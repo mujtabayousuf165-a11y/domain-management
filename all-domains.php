@@ -849,7 +849,7 @@ $result = $conn->query($sql);
                     </div>
                     </div>
 
-                    <div id="projectCostGroup" style="margin-top: 12px; display: none;">
+                    <div id="projectCostGroup" style="margin-top: 12px;">
                         <label style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Domain Price ($):</label>
                         <input type="number" step="0.01" class="email-input" id="projectCostInput" style="margin-bottom: 12px;" placeholder="Enter domain price">
                     </div>
@@ -966,8 +966,8 @@ $result = $conn->query($sql);
             const formattedDate = `${year}-${month}-${day}`;
             createdDateInput.value = formattedDate;
 
-            projectCostGroup.style.display = isBrandDomain ? 'block' : 'none';
-            projectCostInput.value = isBrandDomain && savedProjectCost > 0 ? data.project_cost : '';
+            projectCostGroup.style.display = 'block';
+            projectCostInput.value = data.project_cost || '';
 
             // Split fields into two groups
             const box1Fields = [{
@@ -999,14 +999,6 @@ $result = $conn->query($sql);
                     value: data.unit_head_name
                 }
             ];
-
-            // Add saved Domain Price only for client domains
-            if (data.domain_for && data.domain_for.toLowerCase() === 'client') {
-                box1Fields.push({
-                    label: 'Domain Price',
-                    value: '$' + (data.project_cost || '0')
-                });
-            }
 
             const box2Fields = [{
                     label: 'Email Address',
@@ -1151,21 +1143,10 @@ $result = $conn->query($sql);
                 emailContent += `Client Number: ${clientNumberValue}\n`;
             }
 
-            // Add domain price from input field only for brand domains
-            // Get domain_for from box1 content
-            let domainFor = '';
-            box1Items.forEach(item => {
-                const label = item.querySelector('.modal-data-label').textContent;
-                if (label === 'Domain For:') {
-                    domainFor = item.querySelector('.modal-data-value').textContent.toLowerCase();
-                }
-            });
-
-            if (domainFor === 'brand') {
-                const projectCostValue = projectCostInput.value.trim();
-                if (projectCostValue !== '') {
-                    emailContent += `Domain Price: $${projectCostValue}\n`;
-                }
+            // Add domain price from input field for both client and brand domains
+            const projectCostValue = projectCostInput.value.trim();
+            if (projectCostValue !== '') {
+                emailContent += `Domain Price: $${projectCostValue}\n`;
             }
 
             // Mark as viewed when email is sent

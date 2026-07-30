@@ -574,11 +574,6 @@ $conn->close();
                         </select>
                     </div>
 
-                    <div class="form-group" id="projectCostField">
-                        <label>Domain Price *</label>
-                        <input type="number" step="0.01" class="form-control" name="project_cost" placeholder="Enter Domain Price" required>
-                    </div>
-
                     <div class="form-group">
                         <label>Email Address *</label>
                         <input type="email" class="form-control" name="email_address" placeholder="Enter Email Address" required>
@@ -688,32 +683,27 @@ $conn->close();
         // Function to show/hide fields based on domain_for selection
         function toggleFieldsBasedOnDomainFor() {
             const domainFor = document.getElementById('domainFor').value;
-            const projectCostField = document.getElementById('projectCostField');
             const brandUrlField = document.getElementById('brandUrlField');
             const customerInfoSection = document.getElementById('customerInfoSection');
             const customerInfoTitle = document.getElementById('customerInfoTitle');
 
             if (domainFor === 'brand') {
                 // Hide these fields for Brand
-                projectCostField.style.display = 'none';
                 brandUrlField.style.display = 'none';
                 customerInfoSection.style.display = 'none';
                 customerInfoTitle.style.display = 'none';
 
                 // Remove required attribute from hidden fields
-                document.querySelector('input[name="project_cost"]').required = false;
                 document.querySelector('input[name="brand_url"]').required = false;
                 document.querySelector('input[name="customer_name"]').required = false;
                 document.querySelector('input[name="customer_email"]').required = false;
             } else {
                 // Show these fields for Client
-                projectCostField.style.display = 'block';
                 brandUrlField.style.display = 'block';
                 customerInfoSection.style.display = 'grid';
                 customerInfoTitle.style.display = 'block';
 
                 // Add required attribute back
-                document.querySelector('input[name="project_cost"]').required = true;
                 document.querySelector('input[name="brand_url"]').required = true;
                 document.querySelector('input[name="customer_name"]').required = true;
                 document.querySelector('input[name="customer_email"]').required = true;
