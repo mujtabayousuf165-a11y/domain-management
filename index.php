@@ -603,7 +603,10 @@ $conn->close();
 
                     <div class="form-group full-width">
                         <label>Client Number *</label>
-                        <input type="text" class="form-control" name="client_number" placeholder="Enter US Phone Number (e.g., 123-456-7890)" required>
+                        <div style="display: flex; align-items: center;">
+                            <span style="background: #f3f4f6; border: 1px solid #d1d5db; border-right: none; padding: 12px 16px; border-radius: 8px 0 0 8px; font-weight: 500; color: #374151;">🇺🇸 +1</span>
+                            <input type="text" class="form-control" name="client_number" placeholder="123-456-7890" required style="border-radius: 0 8px 8px 0;">
+                        </div>
                     </div>
 
                 </div>
@@ -767,17 +770,17 @@ $conn->close();
                 }
             }
 
-            // Check client number for US phone format
+            // Check client number for US phone format (without +1 since it's already shown)
             const clientNumberInput = document.querySelector('input[name="client_number"]');
             if (clientNumberInput) {
                 const phoneValue = clientNumberInput.value.trim();
-                // US phone number regex: supports (123) 456-7890, 123-456-7890, 123.456.7890, 1234567890, +1 123-456-7890
-                const usPhoneRegex = /^(\+1\s?)?(\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}$/;
+                // US phone number regex: supports (123) 456-7890, 123-456-7890, 123.456.7890, 1234567890
+                const usPhoneRegex = /^(\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}$/;
                 if (!usPhoneRegex.test(phoneValue)) {
                     clientNumberInput.style.borderColor = '#ef4444';
                     clientNumberInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     clientNumberInput.focus();
-                    showToaster('Please enter a valid US phone number (e.g., (123) 456-7890 or 123-456-7890)', 'error');
+                    showToaster('Please enter a valid US phone number (e.g., 123-456-7890)', 'error');
                     return;
                 }
             }
