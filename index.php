@@ -603,7 +603,7 @@ $conn->close();
 
                     <div class="form-group full-width">
                         <label>Client Number *</label>
-                        <input type="text" class="form-control" name="client_number" placeholder="Enter Client Number" required>
+                        <input type="text" class="form-control" name="client_number" placeholder="Enter US Phone Number (e.g., 123-456-7890)" required>
                     </div>
 
                 </div>
@@ -763,6 +763,21 @@ $conn->close();
                     domainNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     domainNameInput.focus();
                     showToaster('Please enter only one domain name at a time. Multiple domains are not allowed.', 'error');
+                    return;
+                }
+            }
+
+            // Check client number for US phone format
+            const clientNumberInput = document.querySelector('input[name="client_number"]');
+            if (clientNumberInput) {
+                const phoneValue = clientNumberInput.value.trim();
+                // US phone number regex: supports (123) 456-7890, 123-456-7890, 123.456.7890, 1234567890, +1 123-456-7890
+                const usPhoneRegex = /^(\+1\s?)?(\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}$/;
+                if (!usPhoneRegex.test(phoneValue)) {
+                    clientNumberInput.style.borderColor = '#ef4444';
+                    clientNumberInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    clientNumberInput.focus();
+                    showToaster('Please enter a valid US phone number (e.g., (123) 456-7890 or 123-456-7890)', 'error');
                     return;
                 }
             }
