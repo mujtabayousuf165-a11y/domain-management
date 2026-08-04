@@ -863,7 +863,7 @@ $result = $conn->query($sql);
     </div>
 
     <script>
-        let domainCount = <?php echo $result->num_rows; ?>; // Track current domain count
+        let domainCount = <?php echo $total_records; ?>; // Track current domain count
 
         // Function to play notification sound using audio element
         function playNotificationSound() {
