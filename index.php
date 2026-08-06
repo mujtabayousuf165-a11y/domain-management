@@ -603,7 +603,7 @@ $conn->close();
 
                     <div class="form-group full-width">
                         <label>Client Number *</label>
-                        <input type="text" class="form-control" name="client_number" placeholder="Enter 10-digit US phone number" maxlength="10" required>
+                        <input type="text" class="form-control" name="client_number" placeholder="Enter 10-digit US phone number" maxlength="10">
                     </div>
 
                 </div>
@@ -715,6 +715,9 @@ $conn->close();
         // Add event listener to domain_for dropdown
         document.getElementById('domainFor').addEventListener('change', toggleFieldsBasedOnDomainFor);
 
+        // Initialize field visibility on page load
+        toggleFieldsBasedOnDomainFor();
+
         // Update client date on page load
         updateClientDate();
 
@@ -769,9 +772,9 @@ $conn->close();
                 }
             }
 
-            // Check client number for US phone format (10 digits only)
+            // Check client number for US phone format (10 digits only) - only if visible and required
             const clientNumberInput = document.querySelector('input[name="client_number"]');
-            if (clientNumberInput) {
+            if (clientNumberInput && clientNumberInput.offsetParent !== null && clientNumberInput.required) {
                 const phoneValue = clientNumberInput.value.trim();
                 // US phone number regex: exactly 10 digits
                 const usPhoneRegex = /^\d{10}$/;
