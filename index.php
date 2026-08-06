@@ -697,6 +697,7 @@ $conn->close();
                 document.querySelector('input[name="brand_url"]').required = false;
                 document.querySelector('input[name="customer_name"]').required = false;
                 document.querySelector('input[name="customer_email"]').required = false;
+                document.querySelector('input[name="client_number"]').required = false;
             } else {
                 // Show these fields for Client
                 brandUrlField.style.display = 'block';
@@ -707,6 +708,7 @@ $conn->close();
                 document.querySelector('input[name="brand_url"]').required = true;
                 document.querySelector('input[name="customer_name"]').required = true;
                 document.querySelector('input[name="customer_email"]').required = true;
+                document.querySelector('input[name="client_number"]').required = true;
             }
         }
 
